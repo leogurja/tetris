@@ -1,11 +1,26 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "../config";
-import Position from "./position";
 
-export default class Block implements Position {
+export default class Block {
   constructor(public x: number, public y: number, public color: string) {}
 
-  translate(position: Position) {
-    return new Block(this.x + position.x, this.y + position.y, this.color);
+  translate(x: number, y: number) {
+    return new Block(this.x + x, this.y + y, this.color);
+  }
+
+  rotate(reference: Block) {
+    return new Block(
+      reference.y - this.y + reference.x,
+      this.x - reference.x + reference.y,
+      this.color
+    );
+  }
+
+  rotateBack(reference: Block) {
+    return new Block(
+      this.y - reference.y + reference.x,
+      reference.x - this.x + reference.y,
+      this.color
+    );
   }
 
   isOutOfBounds() {

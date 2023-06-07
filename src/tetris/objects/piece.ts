@@ -1,18 +1,36 @@
-import { PIECE_STARTING_X, PIECE_STARTING_Y } from "../config";
-import generateColor from "../generators/generateColor";
-import generateShape from "../generators/generateShape";
 import Block from "./block";
 import Board from "./board";
+import Floor from "./floor";
+
+export enum RotationMode {
+  Flip,
+  Flop,
+  Normal,
+  None,
+}
+
+interface PieceOptions {
+  blocks: Block[];
+  x?: number;
+  y?: number;
+  rotationMode?: RotationMode;
+  color?: string;
+}
 
 export default class Piece {
-  #shape = generateShape();
-  position = { x: PIECE_STARTING_X, y: PIECE_STARTING_Y };
-  color = generateColor();
+  blocks: Block[];
+  rotationMode: RotationMode;
 
-  get blocks() {
-    return this.#shape.shape.map(
-      ({ x, y }) =>
-        new Block(x + this.position.x, y + this.position.y, this.color)
+  constructor({ blocks, rotationMode = RotationMode.Normal }: PieceOptions) {
+    this.rotationMode = rotationMode;
+    this.blocks = blocks;
+  }
+
+  collides(floor: Floor) {
+    return this.blocks.some(
+      (b) =>
+        b.isOutOfBounds() ||
+        floor.blocks.some((fb) => fb.x === b.x && fb.y === b.y)
     );
   }
 
@@ -20,7 +38,29 @@ export default class Piece {
     this.blocks.forEach((b) => board.draw(b));
   }
 
+  translate(x: number, y: number) {
+    return new Piece({
+      ...this,
+      blocks: this.blocks.map((b) => b.translate(x, y)),
+    });
+  }
+
   rotate() {
-    this.#shape.rotate();
+    if (this.rotationMode === RotationMode.None) return this;
+    if (this.rotationMode === RotationMode.Flop)
+      return new Piece({
+        ...this,
+        blocks: this.blocks.map((b) => b.rotateBack(this.blocks[0])),
+        rotationMode: RotationMode.Flip,
+      });
+
+    return new Piece({
+      ...this,
+      blocks: this.blocks.map((b) => b.rotate(this.blocks[0])),
+      rotationMode:
+        this.rotationMode === RotationMode.Flip
+          ? RotationMode.Flop
+          : this.rotationMode,
+    });
   }
 }

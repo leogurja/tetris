@@ -1,35 +1,33 @@
-import Piece from "./objects/piece";
 import Floor from "./objects/floor";
 import Board from "./objects/board";
+import pieceGenerator from "./generators/pieceGenerator";
 
 class Tetris {
   #floor = new Floor();
-  #piece = new Piece();
+  #piece = pieceGenerator.take();
+  upcoming = pieceGenerator.take();
   score = 0;
   isGameOver = false;
 
   moveLeft() {
-    const collides = this.#piece.blocks
-      .map((b) => b.translate({ x: -1, y: 0 }))
-      .some((b) => this.#floor.collidesWith(b));
-    if (!collides) this.#piece.position.x--;
+    const piece = this.#piece.translate(-1, 0);
+    if (!piece.collides(this.#floor)) this.#piece = piece;
   }
 
   moveRight() {
-    const collides = this.#piece.blocks
-      .map((b) => b.translate({ x: 1, y: 0 }))
-      .some((b) => this.#floor.collidesWith(b));
-    if (!collides) this.#piece.position.x++;
+    const piece = this.#piece.translate(1, 0);
+    if (!piece.collides(this.#floor)) this.#piece = piece;
   }
 
   rotate() {
-    this.#piece.rotate();
+    const piece = this.#piece.rotate();
+    if (!piece.collides(this.#floor)) this.#piece = piece;
   }
 
   render() {
     const board = new Board();
-    this.#piece.render(board);
     this.#floor.render(board);
+    this.#piece.render(board);
 
     return board.board;
   }
@@ -39,28 +37,31 @@ class Tetris {
    * @returns indicating if the game is running
    */
   update() {
-    if (this.isGameOver) return false;
-
-    const blocks = this.#piece.blocks.map((b) => b.translate({ y: 1, x: 0 }));
-    const willCollideWithFloor = blocks.some((b) =>
-      this.#floor.collidesWith(b)
-    );
-    if (willCollideWithFloor) {
-      this.#floor.push(blocks.map((b) => b.translate({ y: -1, x: 0 })));
-      this.#piece = new Piece();
-      this.isGameOver = this.#piece.blocks.some((b) =>
-        this.#floor.collidesWith(b)
-      );
-    } else {
-      this.#piece.position.y++;
+    if (!this.#floor.isSettling) {
+      const piece = this.#piece.translate(0, 1);
+      if (piece.collides(this.#floor)) {
+        this.#nextPiece();
+      } else {
+        this.#piece = piece;
+      }
     }
+
+    this.score += this.#floor.update();
   }
 
   reset() {
     this.#floor = new Floor();
-    this.#piece = new Piece();
+    this.#piece = pieceGenerator.take();
+    this.upcoming = pieceGenerator.take();
     this.score = 0;
     this.isGameOver = false;
+  }
+
+  #nextPiece() {
+    this.#floor.push(this.#piece.blocks);
+    this.#piece = this.upcoming;
+    this.upcoming = pieceGenerator.take();
+    this.isGameOver = this.#piece.collides(this.#floor);
   }
 }
 

@@ -7,7 +7,7 @@ export default class Board {
   board = this.#getEmptyBoard();
 
   draw(block: Block) {
-    if (block.isOutOfBounds()) return;
+    if (block.isOutOfBounds() || block.y < 0) return;
 
     this.board[block.y][block.x] = block.color;
   }
