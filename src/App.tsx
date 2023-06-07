@@ -1,24 +1,17 @@
-import { useEffect, useRef } from "react"
-import Tetris from "./tetris"
-import { SQUARE_SIZE } from "./tetris/objects/square"
-
-const TICK = 250
-const tetris = new Tetris()
+import Board from "./components/Board";
+import useTetris from "./hooks/useTetris";
 
 export default function App() {
-  const ref = useRef<HTMLCanvasElement>(null)
+  const { board, isPlaying, reset } = useTetris();
 
-  useEffect(() => {
-    if (ref.current == null) throw new Error('Cadê o canvas ???')
-
-    tetris.init(ref.current)
-    const interval = setInterval(() => {
-      tetris.update()
-      tetris.render()
-    }, TICK)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  return <canvas width={10 * SQUARE_SIZE} height={20 * SQUARE_SIZE} ref={ref} />
+  return (
+    <main className="bg-neutral-800 h-screen">
+      <h1 className="text-center text-4xl p-10 font-bold text-white">Tetris</h1>
+      <p className="text-center text-2xl p-2 font-semibold text-white">
+        {!isPlaying ? "Game Over" : "a"}
+      </p>
+      <Board board={board} />
+      <button onClick={reset}>Reset</button>
+    </main>
+  );
 }

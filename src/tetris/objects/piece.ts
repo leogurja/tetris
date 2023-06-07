@@ -1,39 +1,29 @@
+import { PIECE_STARTING_X, PIECE_STARTING_Y } from "../config";
 import colorGenerator from "../generators/colorGenerator";
-import Floor from "./floor";
-import Square from "./square";
+import Block from "./block";
+import Board from "./board";
+import Position from "./position";
 
 export default class Piece {
-  #squares: Square[]
-  #color = colorGenerator.take()
-  isEjected = false
+  #blocks: Block[];
+  position: Position = { x: PIECE_STARTING_X, y: PIECE_STARTING_Y };
 
-  constructor(squares: {x: number, y: number}[], public x: number, public y: number) {
-    this.#squares = squares.map(({ x, y }) => new Square(this.x + x, this.y + y, this.#color))
+  constructor(blocks: Position[]) {
+    const color = colorGenerator.take();
+    this.#blocks = blocks.map(({ x, y }) => new Block(x, y, color));
   }
 
-  update(floor: Floor) {
-    this.y += 1
-    if (this.#squares.some(s => floor.collidesWith(s))) {
-      this.y -= 1
-      floor.push(this.eject())
-    }
+  get blocks() {
+    return this.#blocks.map((b) => b.translate(this.position));
   }
 
-  render(ctx: CanvasRenderingContext2D) {
-    this.#squares.forEach(s => s.render(ctx, this.x, this.y))
-  }
-
-  eject() {
-    this.#squares.forEach(s => {
-      s.x += this.x
-      s.y += this.y
-    })
-    this.isEjected = true
-
-    return this.#squares
+  render(board: Board) {
+    this.#blocks.forEach((b) => board.draw(b.translate(this.position)));
   }
 
   rotate() {
-    this.#squares.forEach(s => s.rotate())
+    this.#blocks.forEach((s) => {
+      [s.x, s.y] = [-s.y, s.x];
+    });
   }
 }
