@@ -1,23 +1,36 @@
 import Piece from "./objects/piece";
-import pieceGenerator from "./generators/pieceGenerator";
 import Floor from "./objects/floor";
 import Board from "./objects/board";
 
-export default class Tetris {
+class Tetris {
   #floor = new Floor();
-  #piece: Piece = pieceGenerator.take();
+  #piece = new Piece();
+  score = 0;
+  isGameOver = false;
 
-  constructor() {
-    console.log("new game");
+  moveLeft() {
+    const collides = this.#piece.blocks
+      .map((b) => b.translate({ x: -1, y: 0 }))
+      .some((b) => this.#floor.collidesWith(b));
+    if (!collides) this.#piece.position.x--;
+  }
+
+  moveRight() {
+    const collides = this.#piece.blocks
+      .map((b) => b.translate({ x: 1, y: 0 }))
+      .some((b) => this.#floor.collidesWith(b));
+    if (!collides) this.#piece.position.x++;
+  }
+
+  rotate() {
+    this.#piece.rotate();
   }
 
   render() {
-    console.log("render");
     const board = new Board();
     this.#piece.render(board);
     this.#floor.render(board);
 
-    console.log(board.board);
     return board.board;
   }
 
@@ -26,8 +39,7 @@ export default class Tetris {
    * @returns indicating if the game is running
    */
   update() {
-    if (this.#floor.isGameOver) return false;
-    console.log("update");
+    if (this.isGameOver) return false;
 
     const blocks = this.#piece.blocks.map((b) => b.translate({ y: 1, x: 0 }));
     const willCollideWithFloor = blocks.some((b) =>
@@ -35,11 +47,21 @@ export default class Tetris {
     );
     if (willCollideWithFloor) {
       this.#floor.push(blocks.map((b) => b.translate({ y: -1, x: 0 })));
-      this.#piece = pieceGenerator.take();
+      this.#piece = new Piece();
+      this.isGameOver = this.#piece.blocks.some((b) =>
+        this.#floor.collidesWith(b)
+      );
     } else {
       this.#piece.position.y++;
     }
+  }
 
-    return !this.#floor.isGameOver;
+  reset() {
+    this.#floor = new Floor();
+    this.#piece = new Piece();
+    this.score = 0;
+    this.isGameOver = false;
   }
 }
+
+export default new Tetris();

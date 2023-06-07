@@ -4,13 +4,10 @@ import Board from "./board";
 
 export default class Floor {
   blocks: Block[] = [];
-  isGameOver = false;
 
   push(blocks: Block[]) {
-    console.log("push");
     this.blocks.push(...blocks);
     this.#removeCompletedLines(blocks.map((s) => s.y));
-    this.#checkGameOver();
   }
 
   render(board: Board) {
@@ -32,9 +29,5 @@ export default class Floor {
         // dar score
       }
     });
-  }
-
-  #checkGameOver() {
-    this.isGameOver = this.blocks.some((s) => s.y <= 0);
   }
 }

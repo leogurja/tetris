@@ -1,8 +1,8 @@
 import Board from "./components/Board";
-import useTetris from "./hooks/useTetris";
+import useBoard from "./hooks/useBoard";
 
 export default function App() {
-  const { board, isPlaying, reset } = useTetris();
+  const { board, isPlaying, reset } = useBoard();
 
   return (
     <main className="bg-neutral-800 h-screen">

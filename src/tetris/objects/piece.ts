@@ -1,29 +1,26 @@
 import { PIECE_STARTING_X, PIECE_STARTING_Y } from "../config";
-import colorGenerator from "../generators/colorGenerator";
+import generateColor from "../generators/generateColor";
+import generateShape from "../generators/generateShape";
 import Block from "./block";
 import Board from "./board";
-import Position from "./position";
 
 export default class Piece {
-  #blocks: Block[];
-  position: Position = { x: PIECE_STARTING_X, y: PIECE_STARTING_Y };
-
-  constructor(blocks: Position[]) {
-    const color = colorGenerator.take();
-    this.#blocks = blocks.map(({ x, y }) => new Block(x, y, color));
-  }
+  #shape = generateShape();
+  position = { x: PIECE_STARTING_X, y: PIECE_STARTING_Y };
+  color = generateColor();
 
   get blocks() {
-    return this.#blocks.map((b) => b.translate(this.position));
+    return this.#shape.shape.map(
+      ({ x, y }) =>
+        new Block(x + this.position.x, y + this.position.y, this.color)
+    );
   }
 
   render(board: Board) {
-    this.#blocks.forEach((b) => board.draw(b.translate(this.position)));
+    this.blocks.forEach((b) => board.draw(b));
   }
 
   rotate() {
-    this.#blocks.forEach((s) => {
-      [s.x, s.y] = [-s.y, s.x];
-    });
+    this.#shape.rotate();
   }
 }

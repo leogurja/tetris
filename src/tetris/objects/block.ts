@@ -9,11 +9,6 @@ export default class Block implements Position {
   }
 
   isOutOfBounds() {
-    return (
-      this.x < 0 ||
-      this.x >= BOARD_WIDTH ||
-      this.y < 0 ||
-      this.y >= BOARD_HEIGHT
-    );
+    return this.x < 0 || this.x >= BOARD_WIDTH || this.y >= BOARD_HEIGHT;
   }
 }

@@ -1,4 +1,4 @@
-import shuffle from "./shuffle";
+import Bag from "./bag";
 
 const colors = [
   "bg-sky-600 border-2 border-l-sky-400 border-t-sky-400 border-b-sky-800 border-r-sky-800",
@@ -10,17 +10,8 @@ const colors = [
   "bg-blue-600 border-2 border-l-blue-400 border-t-blue-400 border-b-blue-800 border-r-blue-800",
 ];
 
-class ColorGenerator {
-  #bag: string[] = [];
+const bag = new Bag(colors);
 
-  take() {
-    if (this.#bag.length === 0) this.#bag = shuffle([...colors]);
-
-    const color = this.#bag.pop();
-
-    if (color == null) throw new Error("Cor não definida???");
-    return color;
-  }
+export default function generateColor() {
+  return bag.take();
 }
-
-export default new ColorGenerator();
