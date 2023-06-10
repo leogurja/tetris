@@ -2,7 +2,7 @@ interface Props {
   color?: string;
 }
 
-export default function Cell({ color }: Props) {
+export function Cell({ color }: Props) {
   return (
     <>
       {color == null ? (

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { TICK_MS } from "./config";
-import { useTetris } from "./useTetris";
+import { useTetris } from "../tetris";
 import { shallow } from "zustand/shallow";
-import { useKeyboard } from "./useKeyboard";
+import { TICK_MS } from "../tetris/config";
+import { useKeyboard } from "../hooks/useKeyboard";
+import { Board } from "./Board";
+import { Menu } from "./Menu";
 
 enum TickRate {
   Normal = TICK_MS,
@@ -10,7 +12,7 @@ enum TickRate {
   ReallyFast = TICK_MS / 100,
 }
 
-export function useGameLoop() {
+export function Game() {
   const [tickRate, setTickRate] = useState(TickRate.Normal);
   const [isRunning, isGameOver, rotate, move, update] = useTetris(
     (s) => [s.isRunning, s.isGameOver, s.rotate, s.move, s.update],
@@ -44,4 +46,11 @@ export function useGameLoop() {
 
     return () => clearInterval(intervalId);
   }, [tickRate, isRunning, isGameOver, update]);
+
+  return (
+    <div className="flex flex-row justify-center gap-8">
+      <Board />
+      <Menu />
+    </div>
+  );
 }
