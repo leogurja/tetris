@@ -1,8 +1,7 @@
-// prettier.config.js
+const tailwindcss = require("prettier-plugin-tailwindcss");
+const organizeImports = require("prettier-plugin-organize-imports");
+const packagejson = require("prettier-plugin-packagejson");
+
 module.exports = {
-  plugins: [
-    require("prettier-plugin-tailwindcss"),
-    require("prettier-plugin-organize-imports"),
-    require("prettier-plugin-packagejson"),
-  ],
+  plugins: [tailwindcss, organizeImports, packagejson],
 };
