@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Piece } from "./objects/piece";
 import { Floor } from "./objects/floor";
+import { Piece } from "./objects/piece";
 import { render } from "./render";
 
 interface TetrisState {
@@ -11,10 +11,10 @@ interface TetrisState {
   board: string[][];
   floor: Floor;
   score: number;
-  reset: () => void;
   move: (x: number) => void;
   rotate: () => void;
   update: () => void;
+  playPause: () => void;
 }
 
 export const useTetris = create<TetrisState>((set, get) => {
@@ -28,16 +28,19 @@ export const useTetris = create<TetrisState>((set, get) => {
     isGameOver: false,
     isRunning: true,
     score: 0,
-    reset: () => {
-      const piece = Piece.random();
-      set(() => ({
-        piece,
-        upcomingPiece: Piece.random(),
-        floor: new Floor(),
-        isGameOver: false,
-        score: 0,
-        board: render(piece),
-      }));
+    playPause: () => {
+      if (get().isGameOver) {
+        const piece = Piece.random();
+        set(() => ({
+          piece,
+          upcomingPiece: Piece.random(),
+          floor: new Floor(),
+          isGameOver: false,
+          score: 0,
+          board: render(piece),
+        }));
+      }
+      set({ isRunning: !get().isRunning });
     },
     move: (x) => {
       const piece = get().piece.translate(x, 0);
