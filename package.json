@@ -7,7 +7,9 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "deploy": "aws s3 cp dist/ s3://tetris.gurgel.io/ --recursive",
+    "predeploy": "pnpm run build"
   },
   "dependencies": {
     "react": "^18.2.0",
