@@ -1,6 +1,6 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "../config";
 
-export default class Block {
+export class Block {
   constructor(public x: number, public y: number, public color: string) {}
 
   translate(x: number, y: number) {
