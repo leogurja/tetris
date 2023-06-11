@@ -1,25 +1,18 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "../config";
+import { PieceType } from "../types";
 
 export class Block {
-  constructor(public x: number, public y: number, public color: string) {}
+  constructor(public x: number, public y: number, public type: PieceType) {}
 
   translate(x: number, y: number) {
-    return new Block(this.x + x, this.y + y, this.color);
+    return new Block(this.x + x, this.y + y, this.type);
   }
 
   rotate(reference: Block) {
     return new Block(
       reference.y - this.y + reference.x,
       this.x - reference.x + reference.y,
-      this.color
-    );
-  }
-
-  rotateBack(reference: Block) {
-    return new Block(
-      this.y - reference.y + reference.x,
-      reference.x - this.x + reference.y,
-      this.color
+      this.type
     );
   }
 

@@ -1,15 +1,12 @@
+import { colors } from "../colors";
+import { BlockType } from "../tetris";
+
 interface Props {
-  color?: string;
+  type: BlockType;
 }
 
-export function Cell({ color }: Props) {
+export function Cell({ type }: Props) {
   return (
-    <>
-      {color == null ? (
-        <div className="h-8 w-8" />
-      ) : (
-        <div className={`h-8 w-8 ${color}`} />
-      )}
-    </>
+    <div className={`h-8 w-8 border-2 border-neutral-900 ${colors[type]}`} />
   );
 }

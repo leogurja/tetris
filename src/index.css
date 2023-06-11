@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.upcoming-I {
+  transform: translateY(16px);
+}
+
+.upcoming-J,
+.upcoming-L,
+.upcoming-T,
+.upcoming-S,
+.upcoming-Z {
+  transform: translateX(16px);
+}
