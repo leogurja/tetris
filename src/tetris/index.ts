@@ -13,6 +13,7 @@ interface TetrisState {
   upcomingPiece: Piece;
   floor: Floor;
   score: number;
+  level: () => number;
   move: (x: number) => void;
   render: () => BoardType;
   rotate: () => void;
@@ -29,6 +30,10 @@ export const useTetris = create<TetrisState>()((set, get) => ({
   isGameOver: false,
   isRunning: true,
   score: 0,
+  level: () => {
+    if (get().score > 1600) return 15;
+    return Math.floor(get().score / 1000);
+  },
   projectedPiece: () => {
     let piece = get().piece;
     const floor = get().floor;
@@ -64,12 +69,7 @@ export const useTetris = create<TetrisState>()((set, get) => ({
     const score = get().score + get().floor.push(get().projectedPiece().blocks);
     set({ score, piece: get().upcomingPiece, upcomingPiece: Piece.random() });
   },
-  render: () =>
-    render(
-      get().piece,
-      get().floor,
-      get().isRunning ? get().projectedPiece() : undefined
-    ),
+  render: () => render(get().piece, get().floor, get().projectedPiece()),
   update: () => {
     const floor = get().floor;
     const piece = get().piece.translate(0, 1);
