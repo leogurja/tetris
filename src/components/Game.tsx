@@ -22,22 +22,18 @@ export function Game() {
   );
 
   useKeyboard({
-    onKeyDown: (event) => {
-      if (!event.repeat) {
-        if (event.key === "ArrowDown") return setTickRate(50);
-        else if (event.key === " ") return drop();
-        else if (event.key === "ArrowUp") return rotate();
-      }
-      if (event.key === "ArrowLeft") {
-        move(-1);
-      } else if (event.key === "ArrowRight") {
-        move(1);
-      }
+    onKeyDown: {
+      ArrowDown: () => setTickRate(50),
+      ArrowUp: rotate,
+      ArrowLeft: () => move(-1),
+      ArrowRight: () => move(1),
+      " ": drop,
     },
-    onKeyUp: (event) => {
-      if (event.key === "ArrowDown") setTickRate(LEVEL_SPEED(level()));
+    onKeyUp: {
+      ArrowDown: () => setTickRate(LEVEL_SPEED(level())),
     },
     isRunning,
+    allowHold: ["ArrowLeft", "ArrowRight"],
   });
 
   useEffect(() => {
@@ -49,7 +45,7 @@ export function Game() {
   }, [tickRate, isRunning, isGameOver, update]);
 
   return (
-    <div className="flex flex-row justify-center gap-8">
+    <div className="flex flex-col md:flex-row justify-center gap-8">
       <Board />
       <Menu />
     </div>
