@@ -2,11 +2,12 @@ import { ArrowPathIcon, PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import { useMemo } from "react";
 import { shallow } from "zustand/shallow";
 import { useTetris } from "../tetris";
+import { Scoreboard } from "./Scoreboard";
 import { UpcomingPiece } from "./UpcomingPiece";
 
 export function Menu() {
-  const [playPause, isGameOver, isRunning, score] = useTetris(
-    (t) => [t.playPause, t.isGameOver, t.isRunning, t.score],
+  const [playPause, isGameOver, isRunning] = useTetris(
+    (t) => [t.playPause, t.isGameOver, t.isRunning],
     shallow
   );
   const Icon = useMemo(
@@ -24,7 +25,7 @@ export function Menu() {
       >
         <Icon className="h-6 w-6" />
       </span>
-      <p>Score: {score}</p>
+      <Scoreboard />
     </aside>
   );
 }
