@@ -1,74 +1,74 @@
 import { PIECE_STARTING_X, PIECE_STARTING_Y } from "../config";
 import { PieceType } from "../types";
+import { Bag } from "./bag";
 import { Block } from "./block";
 import { Floor } from "./floor";
 
-const pieces = [
+const bag = new Bag([
   {
     type: PieceType.I,
     blocks: [
-      { x: 0, y: 0 },
-      { x: -1, y: 0 },
-      { x: 1, y: 0 },
       { x: 2, y: 0 },
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 3, y: 0 },
     ],
   },
   {
     type: PieceType.J,
     blocks: [
-      { x: 0, y: 1 },
-      { x: 1, y: 1 },
-      { x: -1, y: 1 },
-      { x: -1, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+      { x: 2, y: 1 },
     ],
   },
   {
     type: PieceType.L,
     blocks: [
-      { x: 0, y: 1 },
       { x: 1, y: 0 },
-      { x: 1, y: 1 },
-      { x: -1, y: 1 },
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+      { x: 0, y: 1 },
     ],
   },
   {
     type: PieceType.O,
     blocks: [
-      { x: 0, y: 0 },
-      { x: 0, y: 1 },
       { x: 1, y: 0 },
       { x: 1, y: 1 },
+      { x: 2, y: 0 },
+      { x: 2, y: 1 },
     ],
   },
   {
     type: PieceType.S,
     blocks: [
-      { x: 0, y: 0 },
-      { x: -1, y: 1 },
-      { x: 0, y: 1 },
       { x: 1, y: 0 },
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 2, y: 0 },
     ],
   },
   {
     type: PieceType.T,
     blocks: [
-      { x: 0, y: 0 },
-      { x: -1, y: 0 },
-      { x: 0, y: 1 },
       { x: 1, y: 0 },
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+      { x: 2, y: 0 },
     ],
   },
   {
     type: PieceType.Z,
     blocks: [
+      { x: 1, y: 0 },
       { x: 0, y: 0 },
-      { x: -1, y: 0 },
-      { x: 0, y: 1 },
       { x: 1, y: 1 },
+      { x: 2, y: 1 },
     ],
   },
-];
-let bag = [...pieces].sort(() => Math.random() - 0.5);
+]);
 
 interface PieceOptions {
   blocks: Block[];
@@ -79,21 +79,25 @@ export class Piece {
   blocks: Block[];
   type: PieceType;
 
-  constructor({ blocks, type }: PieceOptions) {
+  private constructor({ blocks, type }: PieceOptions) {
     this.blocks = blocks;
     this.type = type;
   }
 
-  static random() {
-    if (bag.length === 0) bag = [...pieces].sort(() => Math.random() - 0.5);
-
-    // acabamos de preencher caso esteja vazio
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { blocks, type } = bag.pop()!;
+  static take() {
+    const { blocks, type } = bag.take();
     return new Piece({
       blocks: blocks.map(
         (b) => new Block(b.x + PIECE_STARTING_X, b.y + PIECE_STARTING_Y, type)
       ),
+      type,
+    });
+  }
+
+  static peek() {
+    const { blocks, type } = bag.peek();
+    return new Piece({
+      blocks: blocks.map((b) => new Block(b.x, b.y, type)),
       type,
     });
   }

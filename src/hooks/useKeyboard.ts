@@ -4,17 +4,14 @@ interface useKeyboardOptions {
   onKeyDown: Record<string, () => void>;
   onKeyUp: Record<string, () => void>;
   allowHold: string[];
-  isRunning: boolean;
 }
 
 export function useKeyboard({
   onKeyDown,
   onKeyUp,
   allowHold,
-  isRunning,
 }: useKeyboardOptions) {
   useEffect(() => {
-    if (!isRunning) return;
     const keyDownHandler = (event: KeyboardEvent) => {
       const handler = onKeyDown[event.key];
       if (!handler) return;
@@ -36,5 +33,5 @@ export function useKeyboard({
       document.removeEventListener("keydown", keyDownHandler);
       document.removeEventListener("keydown", keyUpHandler);
     };
-  }, [onKeyDown, onKeyUp, isRunning, allowHold]);
+  }, [onKeyDown, onKeyUp, allowHold]);
 }

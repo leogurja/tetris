@@ -7,85 +7,91 @@ export { Piece } from "./objects/piece";
 export { PieceType, type BlockType, type BoardType } from "./types";
 
 interface TetrisState {
-  isGameOver: boolean;
-  isRunning: boolean;
   piece: Piece;
-  upcomingPiece: Piece;
   floor: Floor;
   score: number;
+  isPaused: boolean;
+  upcomingPiece: () => Piece;
   level: () => number;
+  tickRate: () => number;
+  ghostPiece: () => Piece;
+  isRunning: () => boolean;
+  isGameOver: () => boolean;
+  board: () => BoardType;
+}
+
+interface TetrisActions {
   move: (x: number) => void;
-  render: () => BoardType;
   rotate: () => void;
   drop: () => void;
   update: () => void;
   playPause: () => void;
-  projectedPiece: () => Piece;
 }
 
-export const useTetris = create<TetrisState>()((set, get) => ({
-  piece: Piece.random(),
-  floor: new Floor(),
-  upcomingPiece: Piece.random(),
-  isGameOver: false,
-  isRunning: true,
-  score: 0,
-  level: () => {
-    if (get().score > 1600) return 15;
-    return Math.floor(get().score / 1000);
-  },
-  projectedPiece: () => {
+export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
+  ...defaultState(),
+  level: () => Math.min(Math.floor(get().score / 1000), 15),
+  tickRate: () => (0.8 - get().level() * 0.007) ** get().level() * 1000,
+  ghostPiece: () => {
     let piece = get().piece;
     const floor = get().floor;
     while (!piece.collides(floor)) piece = piece.translate(0, 1);
 
     return piece.translate(0, -1);
   },
-  playPause: () => {
-    if (get().isGameOver) {
-      const piece = Piece.random();
-      set(() => ({
-        piece,
-        upcomingPiece: Piece.random(),
-        floor: new Floor(),
-        isGameOver: false,
-        score: 0,
-      }));
-    }
-    set({ isRunning: !get().isRunning });
-  },
-  move: (x) => {
-    const piece = get().piece.translate(x, 0);
-    if (piece.collides(get().floor)) return;
-    set({ piece });
-  },
-  rotate: () => {
-    const piece = get().piece.rotate();
-    if (piece.collides(get().floor)) return;
+  board: () => render(get().piece, get().floor, get().ghostPiece()),
+  upcomingPiece: () => Piece.peek(),
+  isRunning: () => !get().isGameOver() && !get().isPaused,
+  isGameOver: () => get().piece.collides(get().floor),
+  playPause: () =>
+    set((state) => {
+      if (state.isGameOver()) return defaultState();
+      return { isPaused: !state.isPaused };
+    }),
+  move: (x) =>
+    set((state) => {
+      if (!state.isRunning()) return {};
+      const piece = state.piece.translate(x, 0);
+      if (piece.collides(state.floor)) return {};
+      return { piece };
+    }),
+  rotate: () =>
+    set((state) => {
+      if (!state.isRunning()) return {};
+      const piece = state.piece.rotate();
+      if (piece.collides(state.floor)) return {};
 
-    set({ piece });
-  },
-  drop: () => {
-    const score = get().score + get().floor.push(get().projectedPiece().blocks);
-    set({ score, piece: get().upcomingPiece, upcomingPiece: Piece.random() });
-  },
-  render: () => render(get().piece, get().floor, get().projectedPiece()),
-  update: () => {
-    const floor = get().floor;
-    const piece = get().piece.translate(0, 1);
+      return { piece };
+    }),
+  drop: () =>
+    set((state) => {
+      if (!state.isRunning()) return {};
+      const score = state.score + state.floor.push(state.ghostPiece().blocks);
+      return { score, piece: Piece.take() };
+    }),
+  update: () =>
+    set((state) => {
+      if (!state.isRunning()) return {};
+      const floor = state.floor;
+      const piece = state.piece.translate(0, 1);
 
-    if (piece.collides(floor)) {
-      const score = get().score + floor.push(get().piece.blocks);
-      const isGameOver = get().upcomingPiece.collides(floor);
-      set({
-        piece: get().upcomingPiece,
-        upcomingPiece: Piece.random(),
-        isGameOver,
-        isRunning: !isGameOver,
-        score,
-      });
-    } else {
-      set({ piece });
-    }
-  },
+      if (piece.collides(floor)) {
+        const score = state.score + floor.push(state.piece.blocks);
+        return {
+          piece: Piece.take(),
+          score,
+        };
+      } else {
+        return { piece };
+      }
+    }),
 }));
+
+function defaultState() {
+  return {
+    score: 0,
+    isPaused: false,
+    floor: new Floor(),
+    piece: Piece.take(),
+  };
+}

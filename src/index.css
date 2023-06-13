@@ -2,14 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-.upcoming-I {
-  transform: translateY(16px);
+.upcoming.I {
+  transform: translateY(150%);
 }
 
-.upcoming-J,
-.upcoming-L,
-.upcoming-T,
-.upcoming-S,
-.upcoming-Z {
-  transform: translateX(16px);
+.upcoming.O {
+  transform: translateY(100%);
+}
+
+.upcoming.J,
+.upcoming.L,
+.upcoming.T,
+.upcoming.S,
+.upcoming.Z {
+  transform: translate(50%, 100%);
+}
+
+.I {
+  @apply border-b-sky-600 border-l-sky-200 border-r-sky-600 border-t-sky-200 bg-sky-400;
+}
+.J {
+  @apply border-b-blue-800 border-l-blue-400 border-r-blue-800 border-t-blue-400 bg-blue-600;
+}
+.L {
+  @apply border-b-orange-800 border-l-orange-400 border-r-orange-800 border-t-orange-400 bg-orange-600;
+}
+.O {
+  @apply border-b-yellow-600 border-l-yellow-200 border-r-yellow-600 border-t-yellow-200 bg-yellow-400;
+}
+.S {
+  @apply border-b-green-800 border-l-green-400 border-r-green-800 border-t-green-400 bg-green-600;
+}
+.T {
+  @apply border-b-purple-800 border-l-purple-400 border-r-purple-800 border-t-purple-400 bg-purple-600;
+}
+.Z {
+  @apply border-b-red-800 border-l-red-400 border-r-red-800 border-t-red-400 bg-red-600;
+}
+.P {
+  @apply bg-neutral-800;
 }
