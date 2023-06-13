@@ -1,6 +1,8 @@
 import { ArrowPathIcon, PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
 import { shallow } from "zustand/shallow";
 import { useTetris } from "../tetris";
+import { play, useVolume } from "../tetris/audio";
 import { Scoreboard } from "./Scoreboard";
 import { UpcomingPiece } from "./UpcomingPiece";
 
@@ -10,6 +12,11 @@ export function Menu() {
     shallow
   );
   const Icon = isGameOver ? ArrowPathIcon : isRunning ? PauseIcon : PlayIcon;
+  const { volume, setVolume } = useVolume();
+
+  useEffect(() => {
+    if (isGameOver) play("gameOver");
+  }, [isGameOver]);
 
   return (
     <aside className="bg-neutral-700 rounded-2xl px-10 py-2">
@@ -22,6 +29,14 @@ export function Menu() {
         <Icon className="h-6 w-6" />
       </span>
       <Scoreboard />
+      <label>Volume</label>
+      <input
+        type="range"
+        value={volume * 100}
+        min="0"
+        max="100"
+        onChange={(e) => setVolume(parseInt(e.target.value) / 100)}
+      />
     </aside>
   );
 }

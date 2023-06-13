@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
 import { useKeyboard } from "../hooks/useKeyboard";
 import { useTetris } from "../tetris";
+import { play } from "../tetris/audio";
 import { Board } from "./Board";
 import { Menu } from "./Menu";
 
@@ -14,6 +15,7 @@ export function Game() {
 
   useEffect(() => {
     setTickRate(defaultTickRate);
+    if (defaultTickRate !== 1000) play("levelUp");
   }, [defaultTickRate]);
 
   useKeyboard({
