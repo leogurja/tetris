@@ -8,8 +8,8 @@ interface Props {
 export function Cell({ type, upcoming = false }: Props) {
   return (
     <div
-      className={`h-8 w-8 border-2 border-neutral-900 ${type} ${
-        upcoming ? "upcoming" : null
+      className={`aspect-square border-2 border-neutral-900 ${type} ${
+        upcoming ? "upcoming h-6" : "h-8"
       }`}
     />
   );

@@ -17,8 +17,9 @@ export function Scoreboard() {
 
   return (
     <div>
-      <h2>Score Board</h2>
-      <p>Score: {score}</p>
+      <h2 className="font-bold text-lg mt-8">Score</h2>
+      <p className="text-4xl">{score}</p>
+      <h2 className="font-bold text-lg mt-8">Scoreboard</h2>
       {scoreboard.map((score, index) => (
         <p key={index}>
           {index + 1}. {score}

@@ -27,6 +27,7 @@ interface TetrisActions {
   drop: () => void;
   update: () => void;
   playPause: () => void;
+  reset: () => void;
 }
 
 export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
@@ -44,11 +45,8 @@ export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
   upcomingPiece: () => Piece.peek(),
   isRunning: () => !get().isGameOver() && !get().isPaused,
   isGameOver: () => get().piece.collides(get().floor),
-  playPause: () =>
-    set((state) => {
-      if (state.isGameOver()) return defaultState();
-      return { isPaused: !state.isPaused };
-    }),
+  playPause: () => set({ isPaused: !get().isPaused }),
+  reset: () => set(defaultState()),
   move: (x) =>
     set((state) => {
       if (!state.isRunning()) return {};

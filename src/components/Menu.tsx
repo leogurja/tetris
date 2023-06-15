@@ -1,42 +1,17 @@
-import { ArrowPathIcon, PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
-import { useEffect } from "react";
-import { shallow } from "zustand/shallow";
-import { useTetris } from "../tetris";
-import { play, useVolume } from "../tetris/audio";
+import { GameControls } from "./GameControls";
 import { Scoreboard } from "./Scoreboard";
 import { UpcomingPiece } from "./UpcomingPiece";
+import { VolumeControls } from "./VolumeControls";
 
 export function Menu() {
-  const [playPause, isGameOver, isRunning] = useTetris(
-    (t) => [t.playPause, t.isGameOver(), t.isRunning()],
-    shallow
-  );
-  const Icon = isGameOver ? ArrowPathIcon : isRunning ? PauseIcon : PlayIcon;
-  const { volume, setVolume } = useVolume();
-
-  useEffect(() => {
-    if (isGameOver) play("gameOver");
-  }, [isGameOver]);
-
   return (
-    <aside className="bg-neutral-700 rounded-2xl px-10 py-2">
-      <UpcomingPiece />
-      {/* não é um <button /> pra não capturar o pressionamento do espaço */}
-      <span
-        className="inline-flex bg-neutral-600 p-2 rounded-md"
-        onClick={playPause}
-      >
-        <Icon className="h-6 w-6" />
-      </span>
+    <aside className="bg-neutral-700 rounded-2xl p-6">
+      <div className="flex gap-3">
+        <GameControls />
+        <UpcomingPiece />
+      </div>
+      <VolumeControls />
       <Scoreboard />
-      <label>Volume</label>
-      <input
-        type="range"
-        value={volume * 100}
-        min="0"
-        max="100"
-        onChange={(e) => setVolume(parseInt(e.target.value) / 100)}
-      />
     </aside>
   );
 }

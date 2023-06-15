@@ -11,14 +11,20 @@ const files = {
 
 interface VolumeState {
   volume: number;
+  isMuted: boolean;
+  effectiveVolume: () => number;
   setVolume: (volume: number) => void;
+  setIsMuted: (isMuted: boolean) => void;
 }
 
 export const useVolume = create<VolumeState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       volume: 1,
+      isMuted: false,
+      effectiveVolume: () => (get().isMuted ? 0 : get().volume),
       setVolume: (volume) => set({ volume }),
+      setIsMuted: (isMuted) => set({ isMuted }),
     }),
     {
       name: "volume",
