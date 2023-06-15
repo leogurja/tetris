@@ -5,7 +5,7 @@ import { VolumeControls } from "./VolumeControls";
 
 export function Menu() {
   return (
-    <aside className="bg-neutral-700 rounded-2xl p-6">
+    <aside className="bg-neutral-700 rounded-2xl p-6 h-fit">
       <div className="flex gap-3">
         <GameControls />
         <UpcomingPiece />
