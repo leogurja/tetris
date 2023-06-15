@@ -1,5 +1,5 @@
 import { GameControls } from "./GameControls";
-import { Scoreboard } from "./Scoreboard";
+import { Score } from "./Score";
 import { UpcomingPiece } from "./UpcomingPiece";
 import { VolumeControls } from "./VolumeControls";
 
@@ -11,7 +11,7 @@ export function Menu() {
         <UpcomingPiece />
       </div>
       <VolumeControls />
-      <Scoreboard />
+      <Score />
     </aside>
   );
 }
