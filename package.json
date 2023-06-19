@@ -14,8 +14,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "i18next": "^23.2.0",
+    "i18next-browser-languagedetector": "^7.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^13.0.0",
     "zustand": "^4.3.8"
   },
   "devDependencies": {

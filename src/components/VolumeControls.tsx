@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAudio } from "../tetris/audio";
+import { Slider } from "./Slider";
 
 export function VolumeControls() {
   const [musicVolume, setMusicVolume] = useState(0);
   const { volume, setVolume } = useAudio();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const element = document.getElementById("korobeiniki") as HTMLAudioElement;
@@ -14,30 +17,12 @@ export function VolumeControls() {
   return (
     <div className="flex flex-col mt-3 gap-2">
       <fieldset>
-        <label className="block text-md">Música</label>
-        <input
-          type="range"
-          value={musicVolume}
-          className="appearance-none bg-neutral-600 outline-none h-2 rounded-full"
-          min="0"
-          max="100"
-          step="1"
-          onChange={(e) => setMusicVolume(parseInt(e.target.value))}
-        />
-        <span className="inline-block ml-2 w-8">{musicVolume}%</span>
+        <label className="block text-md">{t("music")}</label>
+        <Slider value={musicVolume} setValue={setMusicVolume} />
       </fieldset>
       <fieldset>
-        <label className="block text-md">Efeitos Sonoros</label>
-        <input
-          type="range"
-          value={volume}
-          className="appearance-none bg-neutral-600 outline-none h-2 rounded-full"
-          min="0"
-          max="100"
-          step="1"
-          onChange={(e) => setVolume(parseInt(e.target.value))}
-        />
-        <span className="inline-block ml-2 w-8">{volume}%</span>
+        <label className="block text-md">{t("sfx")}</label>
+        <Slider value={volume} setValue={setVolume} />
       </fieldset>
     </div>
   );

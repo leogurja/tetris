@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useTetris } from "../tetris";
 import { useAudio } from "../tetris/audio";
 
@@ -8,6 +9,7 @@ export function Score() {
     parseInt(localStorage.getItem("highScore") || "0")
   );
   const play = useAudio((state) => state.play);
+  const { t } = useTranslation();
 
   useEffect(
     () => {
@@ -30,9 +32,9 @@ export function Score() {
 
   return (
     <div>
-      <h2 className="font-bold text-lg mt-8">Score</h2>
+      <h2 className="font-bold text-lg mt-8">{t("score")}</h2>
       <p className="text-4xl">{score}</p>
-      <h2 className="font-bold text-lg mt-8">Record</h2>
+      <h2 className="font-bold text-lg mt-8">{t("record")}</h2>
       <p className="text-4xl">{highScore}</p>
     </div>
   );
