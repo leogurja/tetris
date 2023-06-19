@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { shallow } from "zustand/shallow";
 import { useTetris } from "../tetris";
 import { useAudio } from "../tetris/audio";
+import { Button } from "./Button";
 
 export function GameControls() {
   const [playPause, reset, isGameOver, isPaused] = useTetris(
@@ -19,12 +20,8 @@ export function GameControls() {
 
   return (
     <div className="flex flex-col justify-center gap-5 w-full">
-      <span className="bg-neutral-600 p-2 rounded-md" onClick={playPause}>
-        <PlayPauseIcon className="h-6 w-full" />
-      </span>
-      <span className="bg-neutral-600 p-2 rounded-md" onClick={reset}>
-        <ArrowPathIcon className="h-6 w-full" />
-      </span>
+      <Button onClick={playPause} Icon={PlayPauseIcon} />
+      <Button onClick={reset} Icon={ArrowPathIcon} />
     </div>
   );
 }
