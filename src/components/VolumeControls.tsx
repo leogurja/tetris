@@ -15,7 +15,7 @@ export function VolumeControls() {
   }, [musicVolume]);
 
   return (
-    <div className="flex flex-col mt-3 gap-2">
+    <div className="flex flex-col gap-3">
       <fieldset>
         <label className="block text-md">{t("music")}</label>
         <Slider value={musicVolume} setValue={setMusicVolume} />

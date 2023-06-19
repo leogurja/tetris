@@ -54,11 +54,9 @@ export function Game() {
   }, [tickRate, update]);
 
   return (
-    <main className="bg-neutral-800 text-white">
-      <div className="flex flex-row justify-center gap-8">
-        <Board />
-        <Menu />
-      </div>
+    <main className="container mx-auto items-center justify-center bg-neutral-800 text-white flex gap-8">
+      <Board />
+      <Menu />
     </main>
   );
 }

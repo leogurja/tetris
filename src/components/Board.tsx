@@ -10,7 +10,7 @@ export function Board() {
 
   return (
     <div
-      className={`justify-self-center w-fit rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
+      className={`rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
         isRunning() ? "" : "blur-sm"
       }`}
     >

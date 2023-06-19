@@ -18,7 +18,7 @@ export function UpcomingPiece() {
   }, [upcomingPiece]);
 
   return (
-    <div className="rounded-2xl p-2 select-none bg-neutral-900 w-28">
+    <div className="col-span-2 row-span-2 rounded-md p-2 select-none bg-neutral-900">
       {board.map((row, rowIndex) => (
         <div className="flex" key={rowIndex}>
           {row.map((cell, cellIndex) => (

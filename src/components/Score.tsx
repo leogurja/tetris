@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useTetris } from "../tetris";
 import { useAudio } from "../tetris/audio";
+import { LabeledValue } from "./LabeledValue";
 
 export function Score() {
   const [score, level, isGameOver] = useTetris((t) => [
@@ -9,18 +9,17 @@ export function Score() {
     t.level(),
     t.isGameOver(),
   ]);
-  const [highScore, setHighScore] = useState(
-    parseInt(localStorage.getItem("highScore") || "0")
+  const [record, setRecord] = useState(
+    parseInt(localStorage.getItem("Record") || "0")
   );
   const play = useAudio((state) => state.play);
-  const { t } = useTranslation();
 
   useEffect(
     () => {
       if (!isGameOver) return;
-      if (highScore < score) {
-        localStorage.setItem("highScore", score.toString());
-        setHighScore(score);
+      if (record < score) {
+        localStorage.setItem("Record", score.toString());
+        setRecord(score);
       }
     },
     // não queremos rodar este efeito caso score ou save mudem
@@ -35,13 +34,10 @@ export function Score() {
   }, [score]);
 
   return (
-    <div>
-      <h2 className="font-bold text-lg mt-8">{t("level")}</h2>
-      <p className="text-4xl">{level + 1}</p>
-      <h2 className="font-bold text-lg mt-8">{t("score")}</h2>
-      <p className="text-4xl">{score}</p>
-      <h2 className="font-bold text-lg mt-8">{t("record")}</h2>
-      <p className="text-4xl">{highScore}</p>
-    </div>
+    <>
+      <LabeledValue name="level">{level + 1}</LabeledValue>
+      <LabeledValue name="score">{score}</LabeledValue>
+      <LabeledValue name="record">{record}</LabeledValue>
+    </>
   );
 }

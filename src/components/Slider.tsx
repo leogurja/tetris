@@ -7,9 +7,9 @@ interface SliderProps {
 
 export function Slider({ value, setValue }: PropsWithoutRef<SliderProps>) {
   return (
-    <fieldset>
+    <fieldset className="w-full whitespace-nowrap">
       <input
-        className="appearance-none bg-neutral-600 outline-none h-2 rounded-full w-36"
+        className="appearance-none bg-neutral-600 outline-none h-2 rounded-full w-max"
         type="range"
         value={value}
         onChange={(e) => setValue(parseInt(e.target.value))}

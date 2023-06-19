@@ -19,7 +19,7 @@ export function GameControls() {
   }, [isGameOver]);
 
   return (
-    <div className="flex flex-col justify-center gap-5 w-full">
+    <div className="flex flex-grow flex-col gap-3">
       <Button onClick={playPause} Icon={PlayPauseIcon} />
       <Button onClick={reset} Icon={ArrowPathIcon} />
     </div>
