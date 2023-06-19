@@ -18,6 +18,7 @@ i18n
           sfx: "Sound Effects",
           score: "Score",
           record: "High Score",
+          level: "Level",
         },
       },
       pt: {
@@ -26,6 +27,7 @@ i18n
           sfx: "Efeitos Sonoros",
           score: "Pontuação",
           record: "Recorde",
+          level: "Nível",
         },
       },
     },

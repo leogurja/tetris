@@ -4,7 +4,11 @@ import { useTetris } from "../tetris";
 import { useAudio } from "../tetris/audio";
 
 export function Score() {
-  const [score, isGameOver] = useTetris((t) => [t.score, t.isGameOver()]);
+  const [score, level, isGameOver] = useTetris((t) => [
+    t.score,
+    t.level(),
+    t.isGameOver(),
+  ]);
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem("highScore") || "0")
   );
@@ -32,6 +36,8 @@ export function Score() {
 
   return (
     <div>
+      <h2 className="font-bold text-lg mt-8">{t("level")}</h2>
+      <p className="text-4xl">{level + 1}</p>
       <h2 className="font-bold text-lg mt-8">{t("score")}</h2>
       <p className="text-4xl">{score}</p>
       <h2 className="font-bold text-lg mt-8">{t("record")}</h2>
