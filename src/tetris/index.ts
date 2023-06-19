@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { play } from "./audio";
 import { Floor } from "./objects/floor";
 import { Piece } from "./objects/piece";
 import { render } from "./render";
@@ -52,7 +51,6 @@ export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
       if (!state.isRunning()) return {};
       const piece = state.piece.translate(x, 0);
       if (piece.collides(state.floor)) return {};
-      play("click");
       return { piece };
     }),
   rotate: () =>
@@ -60,7 +58,6 @@ export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
       if (!state.isRunning()) return {};
       const piece = state.piece.rotate();
       if (piece.collides(state.floor)) return {};
-      play("click");
 
       return { piece };
     }),
@@ -68,7 +65,6 @@ export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
     set((state) => {
       if (!state.isRunning()) return {};
       const addedScore = state.floor.push(state.ghostPiece().blocks);
-      play(addedScore > 0 ? "clear" : "drop");
       return { score: state.score + addedScore, piece: Piece.take() };
     }),
   update: () =>
@@ -79,8 +75,6 @@ export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
 
       if (piece.collides(floor)) {
         const addedScore = floor.push(state.piece.blocks);
-        console.log(addedScore);
-        if (addedScore > 0) play("clear");
         return {
           piece: Piece.take(),
           score: state.score + addedScore,

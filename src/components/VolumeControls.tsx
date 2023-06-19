@@ -1,8 +1,8 @@
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid";
-import { useVolume } from "../tetris/audio";
+import { useAudio } from "../tetris/audio";
 
 export function VolumeControls() {
-  const { setVolume, isMuted, setIsMuted, effectiveVolume } = useVolume();
+  const { setVolume, isMuted, setIsMuted, effectiveVolume } = useAudio();
 
   const Icon = effectiveVolume() === 0 ? SpeakerXMarkIcon : SpeakerWaveIcon;
 
@@ -19,9 +19,10 @@ export function VolumeControls() {
       <input
         type="range"
         value={effectiveVolume() * 100}
-        className="h-2 rounded-full bg-neutral-600 w-28"
+        className="appearance-none bg-neutral-600 outline-none h-2 rounded-full"
         min="0"
         max="100"
+        step="1"
         onChange={(e) => setVolume(parseInt(e.target.value) / 100)}
       />
     </div>

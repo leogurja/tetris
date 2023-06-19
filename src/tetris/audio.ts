@@ -9,15 +9,16 @@ const files = {
   levelUp: document.getElementById("level-up") as HTMLAudioElement,
 };
 
-interface VolumeState {
+interface AudioState {
   volume: number;
   isMuted: boolean;
   effectiveVolume: () => number;
   setVolume: (volume: number) => void;
   setIsMuted: (isMuted: boolean) => void;
+  play: (audio: keyof typeof files) => void;
 }
 
-export const useVolume = create<VolumeState>()(
+export const useAudio = create<AudioState>()(
   persist(
     (set, get) => ({
       volume: 1,
@@ -25,15 +26,14 @@ export const useVolume = create<VolumeState>()(
       effectiveVolume: () => (get().isMuted ? 0 : get().volume),
       setVolume: (volume) => set({ volume }),
       setIsMuted: (isMuted) => set({ isMuted }),
+      play: (audio) => {
+        const clone = files[audio].cloneNode(true) as HTMLAudioElement;
+        clone.volume = get().effectiveVolume();
+        clone.play();
+      },
     }),
     {
       name: "volume",
     }
   )
 );
-
-export function play(audio: keyof typeof files) {
-  const clone = files[audio].cloneNode(true) as HTMLAudioElement;
-  clone.volume = useVolume.getState().volume;
-  clone.play();
-}

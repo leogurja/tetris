@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTetris } from "../tetris";
+import { useAudio } from "../tetris/audio";
 
 export function Score() {
   const [score, isGameOver] = useTetris((t) => [t.score, t.isGameOver()]);
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem("highScore") || "0")
   );
+  const play = useAudio((state) => state.play);
 
   useEffect(
     () => {
@@ -19,6 +21,12 @@ export function Score() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isGameOver]
   );
+
+  useEffect(() => {
+    if (score != 0) play("clear");
+    // não queremos rodar este efeito caso score ou save mudem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [score]);
 
   return (
     <div>

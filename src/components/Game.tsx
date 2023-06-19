@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
 import { useKeyboard } from "../hooks/useKeyboard";
 import { useTetris } from "../tetris";
-import { play } from "../tetris/audio";
+import { useAudio } from "../tetris/audio";
 import { Board } from "./Board";
 import { Menu } from "./Menu";
 
@@ -12,19 +12,34 @@ export function Game() {
     shallow
   );
   const [tickRate, setTickRate] = useState(defaultTickRate);
+  const play = useAudio((state) => state.play);
 
   useEffect(() => {
     setTickRate(defaultTickRate);
     if (defaultTickRate !== 1000) play("levelUp");
+    // não precisamos rodar novamente quando play mudar
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTickRate]);
 
   useKeyboard({
     onKeyDown: {
       ArrowDown: () => setTickRate(50),
-      ArrowUp: rotate,
-      ArrowLeft: () => move(-1),
-      ArrowRight: () => move(1),
-      " ": drop,
+      ArrowUp: () => {
+        play("click");
+        rotate();
+      },
+      ArrowLeft: () => {
+        play("click");
+        move(-1);
+      },
+      ArrowRight: () => {
+        play("click");
+        move(1);
+      },
+      " ": () => {
+        play("drop");
+        drop();
+      },
     },
     onKeyUp: {
       ArrowDown: () => setTickRate(defaultTickRate),
