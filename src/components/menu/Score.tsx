@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useTetris } from "../tetris";
-import { useAudio } from "../tetris/audio";
+import { useTetris } from "../../tetris";
+import { useAudio } from "../../tetris/audio";
 import { LabeledValue } from "./LabeledValue";
 
 export function Score() {
@@ -35,9 +35,15 @@ export function Score() {
 
   return (
     <>
-      <LabeledValue name="level">{level + 1}</LabeledValue>
-      <LabeledValue name="score">{score}</LabeledValue>
-      <LabeledValue name="record">{record}</LabeledValue>
+      <LabeledValue name="level">
+        <p className="text-lg md:text-xl lg:text-4xl">{level + 1}</p>
+      </LabeledValue>
+      <LabeledValue name="score">
+        <p className="text-lg md:text-xl lg:text-4xl">{score}</p>
+      </LabeledValue>
+      <LabeledValue name="record">
+        <p className="text-lg md:text-xl lg:text-4xl">{record}</p>
+      </LabeledValue>
     </>
   );
 }

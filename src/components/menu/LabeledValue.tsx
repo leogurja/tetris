@@ -13,8 +13,8 @@ export function LabeledValue({
 
   return (
     <div>
-      <h2 className="font-bold text-md">{t(name)}</h2>
-      <p className="text-lg md:text-xl lg:text-4xl">{children}</p>
+      <h2 className="font-bold text-sm sm:text-lg">{t(name)}</h2>
+      {children}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useKeyboard } from "../hooks/useKeyboard";
 import { useTetris } from "../tetris";
 import { useAudio } from "../tetris/audio";
 import { Board } from "./Board";
-import { Menu } from "./Menu";
+import { Menu } from "./menu";
 
 export function Game() {
   const [rotate, move, update, drop, defaultTickRate] = useTetris(
@@ -54,7 +54,7 @@ export function Game() {
   }, [tickRate, update]);
 
   return (
-    <main className="container mx-auto items-center justify-center bg-neutral-800 text-white flex gap-8">
+    <main className="container mx-auto items-center justify-center bg-neutral-800 text-white flex gap-2 sm:gap-8">
       <Board />
       <Menu />
     </main>

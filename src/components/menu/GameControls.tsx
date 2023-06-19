@@ -1,8 +1,8 @@
 import { ArrowPathIcon, PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { shallow } from "zustand/shallow";
-import { useTetris } from "../tetris";
-import { useAudio } from "../tetris/audio";
+import { useTetris } from "../../tetris";
+import { useAudio } from "../../tetris/audio";
 import { Button } from "./Button";
 
 export function GameControls() {
