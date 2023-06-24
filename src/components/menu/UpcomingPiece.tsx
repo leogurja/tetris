@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { BlockType, useTetris } from "../../tetris";
+import { BlockType, Piece } from "../../tetris";
 import { Cell } from "../Cell";
 
 export function UpcomingPiece() {
-  const upcomingPiece = useTetris((t) => t.upcomingPiece());
+  const upcomingPiece = Piece.peek();
 
   const board = useMemo(() => {
     const board = Array(4)

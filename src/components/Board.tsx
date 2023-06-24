@@ -1,17 +1,22 @@
-import { shallow } from "zustand/shallow";
-import { useTetris } from "../tetris";
+import { useAtomValue } from "jotai";
+import { useMemo } from "react";
+import { floorAtom, pieceAtom, render } from "../tetris";
 import { Cell } from "./Cell";
 
-export function Board() {
-  const [board, isRunning] = useTetris(
-    (t) => [t.board(), t.isRunning, t.piece],
-    shallow
-  );
+interface BoardProps {
+  isRunning: boolean;
+}
+
+export function Board({ isRunning }: BoardProps) {
+  const piece = useAtomValue(pieceAtom);
+  const floor = useAtomValue(floorAtom);
+
+  const board = useMemo(() => render(piece, floor), [piece, floor]);
 
   return (
     <div
       className={`rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
-        isRunning() ? "" : "blur-sm"
+        isRunning ? "" : "blur-sm"
       }`}
     >
       {board.map((row, rowIndex) => (

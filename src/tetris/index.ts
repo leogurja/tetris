@@ -1,95 +1,146 @@
-import { create } from "zustand";
-import { Floor } from "./objects/floor";
-import { Piece } from "./objects/piece";
-import { render } from "./render";
-import { type BoardType } from "./types";
-export { Piece } from "./objects/piece";
-export { PieceType, type BlockType, type BoardType } from "./types";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { useCallback, useEffect } from "react";
+import { Floor } from "./floor";
+import { Piece } from "./piece";
+import { useAudio } from "./useAudio";
+import { useKeyboard } from "./useKeyboard";
 
-interface TetrisState {
-  piece: Piece;
-  floor: Floor;
-  score: number;
-  isPaused: boolean;
-  upcomingPiece: () => Piece;
-  level: () => number;
-  tickRate: () => number;
-  ghostPiece: () => Piece;
-  isRunning: () => boolean;
-  isGameOver: () => boolean;
-  board: () => BoardType;
-}
+export { render } from "./render";
+export { type BlockType, type BoardType } from "./types";
+export { Piece };
 
-interface TetrisActions {
-  move: (x: number) => void;
-  rotate: () => void;
-  drop: () => void;
-  update: () => void;
-  playPause: () => void;
-  reset: () => void;
-}
+// state
+export const pieceAtom = atom(Piece.take());
+export const floorAtom = atom(new Floor());
+export const scoreAtom = atom(0);
+export const recordAtom = atomWithStorage("record", 0);
+export const levelAtom = atom((get) =>
+  Math.min(Math.floor(get(scoreAtom) / 1000), 15)
+);
 
-export const useTetris = create<TetrisState & TetrisActions>()((set, get) => ({
-  ...defaultState(),
-  level: () => Math.min(Math.floor(get().score / 1000), 15),
-  tickRate: () => (0.8 - get().level() * 0.007) ** get().level() * 1000,
-  ghostPiece: () => {
-    let piece = get().piece;
-    const floor = get().floor;
-    while (!piece.collides(floor)) piece = piece.translate(0, 1);
+export const isGameOverAtom = atom((get) =>
+  get(pieceAtom).collides(get(floorAtom))
+);
+export const isRunningAtom = atom(
+  (get) => !get(isPausedAtom) && !get(isGameOverAtom)
+);
 
-    return piece.translate(0, -1);
-  },
-  board: () => render(get().piece, get().floor, get().ghostPiece()),
-  upcomingPiece: () => Piece.peek(),
-  isRunning: () => !get().isGameOver() && !get().isPaused,
-  isGameOver: () => get().piece.collides(get().floor),
-  playPause: () => set({ isPaused: !get().isPaused }),
-  reset: () => set(defaultState()),
-  move: (x) =>
-    set((state) => {
-      if (!state.isRunning()) return {};
-      const piece = state.piece.translate(x, 0);
-      if (piece.collides(state.floor)) return {};
-      return { piece };
-    }),
-  rotate: () =>
-    set((state) => {
-      if (!state.isRunning()) return {};
-      const piece = state.piece.rotate();
-      if (piece.collides(state.floor)) return {};
+// internals
+const isPausedAtom = atom(true);
+const isAcceleratedAtom = atom(false);
+const tickRateAtom = atom(
+  (get) => (0.8 - get(levelAtom) * 0.007) ** get(levelAtom) * 1000
+);
 
-      return { piece };
-    }),
-  drop: () =>
-    set((state) => {
-      if (!state.isRunning()) return {};
-      const addedScore = state.floor.push(state.ghostPiece().blocks);
-      return { score: state.score + addedScore, piece: Piece.take() };
-    }),
-  update: () =>
-    set((state) => {
-      if (!state.isRunning()) return {};
-      const floor = state.floor;
-      const piece = state.piece.translate(0, 1);
+export function useTetris() {
+  const { play, playMusic, pauseMusic } = useAudio();
 
-      if (piece.collides(floor)) {
-        const addedScore = floor.push(state.piece.blocks);
-        return {
-          piece: Piece.take(),
-          score: state.score + addedScore,
-        };
-      } else {
-        return { piece };
+  // state
+  const [piece, setPiece] = useAtom(pieceAtom);
+  const [isAccelerated, setIsAccelerated] = useAtom(isAcceleratedAtom);
+  const [score, setScore] = useAtom(scoreAtom);
+  const [floor, setFloor] = useAtom(floorAtom);
+  const tickRate = useAtomValue(tickRateAtom);
+  const level = useAtomValue(levelAtom);
+  const setRecord = useSetAtom(recordAtom);
+  const setIsPaused = useSetAtom(isPausedAtom);
+
+  // derived state
+  const isGameOver = useAtomValue(isGameOverAtom);
+  const isRunning = useAtomValue(isRunningAtom);
+  const calculatedTickRate = isAccelerated ? 50 : tickRate;
+
+  const update = useCallback(() => {
+    setPiece((piece) => {
+      const updatedPiece = piece.translate(0, 1);
+
+      if (updatedPiece.collides(floor)) {
+        setScore((s) => s + floor.push(piece.blocks));
+
+        return Piece.take();
       }
-    }),
-}));
 
-function defaultState() {
-  return {
-    score: 0,
-    isPaused: false,
-    floor: new Floor(),
-    piece: Piece.take(),
-  };
+      return updatedPiece;
+    });
+  }, [setScore, floor, setPiece]);
+
+  const reset = useCallback(() => {
+    setFloor(new Floor());
+    setPiece(Piece.take());
+    setIsPaused(true);
+    setScore(0);
+  }, [setFloor, setIsPaused, setPiece, setScore]);
+
+  useKeyboard({
+    onKeyDown: {
+      ArrowDown: () => setIsAccelerated(true),
+      ArrowUp: () => {
+        if (!isRunning) return;
+        play("click");
+        setPiece((piece) => {
+          const rotatedPiece = piece.rotate();
+          if (rotatedPiece.collides(floor)) return piece;
+
+          return rotatedPiece;
+        });
+      },
+      ArrowLeft: () => {
+        if (!isRunning) return;
+        play("click");
+        setPiece((piece) => {
+          const movedPiece = piece.translate(-1, 0);
+          if (movedPiece.collides(floor)) return piece;
+          return movedPiece;
+        });
+      },
+      ArrowRight: () => {
+        if (!isRunning) return;
+        play("click");
+        setPiece((piece) => {
+          const movedPiece = piece.translate(1, 0);
+          if (movedPiece.collides(floor)) return piece;
+          return movedPiece;
+        });
+      },
+      " ": () => {
+        if (!isRunning) return;
+        play("drop");
+        setScore((s) => s + floor.push(piece.project(floor).blocks));
+        setPiece(Piece.take());
+      },
+    },
+    onKeyUp: {
+      ArrowDown: () => setIsAccelerated(false),
+    },
+    allowHold: ["ArrowLeft", "ArrowRight"],
+  });
+
+  useEffect(() => {
+    if (!isGameOver) return;
+    play("gameOver");
+    setRecord((prev) => Math.max(prev, score));
+  }, [isGameOver, play, setRecord, score]);
+
+  useEffect(() => {
+    if (!isRunning) return pauseMusic();
+    playMusic();
+  }, [isRunning, pauseMusic, playMusic]);
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const intervalId = setInterval(update, calculatedTickRate);
+    return () => clearInterval(intervalId);
+  }, [update, isRunning, isAccelerated, calculatedTickRate]);
+
+  useEffect(() => {
+    if (level !== 0) play("levelUp");
+  }, [level, play]);
+
+  useEffect(() => {
+    if (score !== 0) play("clear");
+  }, [score, play]);
+
+  return { reset, isGameOver, isRunning, setIsPaused };
 }

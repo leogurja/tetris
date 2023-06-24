@@ -1,8 +1,7 @@
-import { PIECE_STARTING_X, PIECE_STARTING_Y } from "../config";
-import { PieceType } from "../types";
 import { Bag } from "./bag";
 import { Block } from "./block";
 import { Floor } from "./floor";
+import { PieceType } from "./types";
 
 const bag = new Bag([
   {
@@ -87,9 +86,7 @@ export class Piece {
   static take() {
     const { blocks, type } = bag.take();
     return new Piece({
-      blocks: blocks.map(
-        (b) => new Block(b.x + PIECE_STARTING_X, b.y + PIECE_STARTING_Y, type)
-      ),
+      blocks: blocks.map((b) => new Block(b.x + 3, b.y, type)),
       type,
     });
   }
@@ -124,5 +121,12 @@ export class Piece {
       ...this,
       blocks: this.blocks.map((b) => b.rotate(this.blocks[0])),
     });
+  }
+
+  project(floor: Floor) {
+    let projection = this.translate(0, 1);
+    while (!projection.collides(floor)) projection = projection.translate(0, 1);
+
+    return projection.translate(0, -1);
   }
 }
