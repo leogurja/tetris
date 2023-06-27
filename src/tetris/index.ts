@@ -113,7 +113,7 @@ export function useTetris() {
     onKeyUp: {
       ArrowDown: () => setIsAccelerated(false),
     },
-    allowHold: ["ArrowLeft", "ArrowRight"],
+    allowRepeat: ["ArrowLeft", "ArrowRight"],
   });
 
   useEffect(() => {
