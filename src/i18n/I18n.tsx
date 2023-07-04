@@ -7,7 +7,7 @@ export function I18n() {
   const { i18n } = useTranslation();
 
   return (
-    <div className="flex">
+    <div className="flex gap-3">
       <Flag
         image={BrazilFlag}
         isSelected={i18n.language.includes("pt")}

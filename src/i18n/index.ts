@@ -19,6 +19,8 @@ i18n
           score: "Score",
           record: "High Score",
           level: "Level",
+          sourceCode: "Source Code",
+          portfolio: "Portfolio",
         },
       },
       pt: {
@@ -28,6 +30,8 @@ i18n
           score: "Pontuação",
           record: "Recorde",
           level: "Nível",
+          sourceCode: "Código Fonte",
+          portfolio: "Portfólio",
         },
       },
     },

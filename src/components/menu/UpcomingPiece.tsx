@@ -18,7 +18,7 @@ export function UpcomingPiece() {
   }, [upcomingPiece]);
 
   return (
-    <div className="grid grid-cols-4 grow rounded-md p-2 select-none bg-neutral-900">
+    <div className="grid grid-cols-4 grow place-content-center rounded-md p-2 select-none bg-neutral-900">
       {board.map((row, rowIndex) =>
         row.map((cell, cellIndex) => (
           <Cell key={`${rowIndex}${cellIndex}`} upcoming type={cell} />

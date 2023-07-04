@@ -1,5 +1,5 @@
 import { Game } from "./components/Game";
-import { Nav } from "./components/Nav";
+import { Nav } from "./components/nav";
 
 import "./i18n";
 
