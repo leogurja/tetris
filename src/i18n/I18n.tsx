@@ -10,12 +10,12 @@ export function I18n() {
     <div className="flex">
       <Flag
         image={BrazilFlag}
-        isSelected={i18n.language === "pt"}
+        isSelected={i18n.language.includes("pt")}
         onClick={() => i18n.changeLanguage("pt")}
       />
       <Flag
         image={UsaFlag}
-        isSelected={i18n.language === "en"}
+        isSelected={i18n.language.includes("en")}
         onClick={() => i18n.changeLanguage("en")}
       />
     </div>
