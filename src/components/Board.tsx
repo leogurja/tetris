@@ -12,7 +12,7 @@ export function Board() {
 
   return (
     <div
-      className={`grid grid-cols-10 gap-0 grow-0 shrink self-stretch place-content-end aspect-[1/2] rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
+      className={`grid grid-cols-10 self-stretch place-content-end aspect-[1/2] rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
         isRunning ? "" : "blur-sm"
       }`}
     >
