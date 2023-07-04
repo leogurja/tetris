@@ -9,4 +9,4 @@ export enum PieceType {
 }
 
 export type BlockType = PieceType | "P" | "";
-export type BoardType = BlockType[][];
+export type BoardType = BlockType[];

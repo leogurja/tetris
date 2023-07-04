@@ -56,14 +56,16 @@ export function useTetris() {
       const updatedPiece = piece.translate(0, 1);
 
       if (updatedPiece.collides(floor)) {
-        setScore((s) => s + floor.push(piece.blocks));
+        const addedScore = floor.push(piece.blocks);
+        if (addedScore > 0) play("clear");
+        setScore((s) => s + addedScore);
 
         return Piece.take();
       }
 
       return updatedPiece;
     });
-  }, [setScore, floor, setPiece]);
+  }, [setScore, floor, setPiece, play]);
 
   const reset = useCallback(() => {
     setFloor(new Floor());
@@ -106,7 +108,9 @@ export function useTetris() {
       " ": () => {
         if (!isRunning) return;
         play("drop");
-        setScore((s) => s + floor.push(piece.project(floor).blocks));
+        const addedScore = floor.push(piece.project(floor).blocks);
+        if (addedScore > 0) play("clear");
+        setScore((s) => s + addedScore);
         setPiece(Piece.take());
       },
     },
@@ -138,9 +142,5 @@ export function useTetris() {
     if (level !== 0) play("levelUp");
   }, [level, play]);
 
-  useEffect(() => {
-    if (score !== 0) play("clear");
-  }, [score, play]);
-
-  return { reset, isGameOver, isRunning, setIsPaused };
+  return { reset, setIsPaused };
 }

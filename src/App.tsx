@@ -5,9 +5,9 @@ import "./i18n";
 
 export function App() {
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <Nav />
       <Game />
-    </>
+    </div>
   );
 }

@@ -18,14 +18,12 @@ export function UpcomingPiece() {
   }, [upcomingPiece]);
 
   return (
-    <div className="col-span-2 row-span-2 rounded-md p-2 select-none bg-neutral-900">
-      {board.map((row, rowIndex) => (
-        <div className="flex" key={rowIndex}>
-          {row.map((cell, cellIndex) => (
-            <Cell key={cellIndex} upcoming type={cell} />
-          ))}
-        </div>
-      ))}
+    <div className="grid grid-cols-4 grow rounded-md p-2 select-none bg-neutral-900">
+      {board.map((row, rowIndex) =>
+        row.map((cell, cellIndex) => (
+          <Cell key={`${rowIndex}${cellIndex}`} upcoming type={cell} />
+        ))
+      )}
     </div>
   );
 }
