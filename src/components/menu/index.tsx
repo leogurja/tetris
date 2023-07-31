@@ -1,8 +1,8 @@
 import { ArrowPathIcon, PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
-import { SetStateAction, useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import {
-  isGameOverAtom,
-  isRunningAtom,
+  GameState,
+  gameStateAtom,
   levelAtom,
   recordAtom,
   scoreAtom,
@@ -15,32 +15,39 @@ import { UpcomingPiece } from "./UpcomingPiece";
 
 interface MenuProps {
   reset: () => void;
-  setIsPaused: (value: SetStateAction<boolean>) => void;
 }
 
-export function Menu({ reset, setIsPaused }: MenuProps) {
+export function Menu({ reset }: MenuProps) {
   const { musicVolume, setMusicVolume, volume, setVolume } = useAudio();
-  const isGameOver = useAtomValue(isGameOverAtom);
-  const isRunning = useAtomValue(isRunningAtom);
+  const [gameState, setGameState] = useAtom(gameStateAtom);
   const level = useAtomValue(levelAtom);
   const score = useAtomValue(scoreAtom);
   const record = useAtomValue(recordAtom);
 
-  const PlayPauseIcon = isGameOver
-    ? ArrowPathIcon
-    : isRunning
-    ? PauseIcon
-    : PlayIcon;
+  const icons: Record<GameState, typeof ArrowPathIcon> = {
+    GameOver: ArrowPathIcon,
+    Playing: PauseIcon,
+    Paused: PlayIcon,
+  };
 
   const playPause = () => {
-    if (isGameOver) return reset();
-    return setIsPaused((p) => !p);
+    return setGameState((p) => {
+      switch (p) {
+        case GameState.Playing:
+          return GameState.Paused;
+        case GameState.Paused:
+          return GameState.Playing;
+        case GameState.GameOver:
+          reset();
+          return GameState.Playing;
+      }
+    });
   };
 
   return (
     <aside className="bg-neutral-700 rounded-2xl p-4 gap-4 sm:p-6 flex flex-col self-start">
       <div className="flex items-stretch justify-center gap-2 sm:gap-5">
-        <Button onClick={playPause} Icon={PlayPauseIcon} />
+        <Button onClick={playPause} Icon={icons[gameState]} />
         <UpcomingPiece />
       </div>
       <div className="flex flex-col gap-3">
