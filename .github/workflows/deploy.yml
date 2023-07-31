@@ -13,17 +13,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: 'npm'
-          cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
       - name: Install dependencies
         run: npm ci
-        working-directory: ${{ env.BUILD_PATH }}
       - name: Check
         run: tsc && npm run lint
-        working-directory: ${{ env.BUILD_PATH }}
       - name: Build
         run: npm run build
-        working-directory: ${{ env.BUILD_PATH }}
   deploy:
     environment:
       name: Deploy
@@ -38,4 +35,3 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: tetris
           source_dir: dist
-          working-directory: ${{ env.BUILD_PATH }}
