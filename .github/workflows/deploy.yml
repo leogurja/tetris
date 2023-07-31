@@ -21,11 +21,20 @@ jobs:
         run: tsc && npm run lint
       - name: Build
         run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
     name: Deploy
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
       - name: Upload S3
         uses: shallwefootball/upload-s3-action@v1.3.3
         with:
