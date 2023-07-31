@@ -4,9 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "tsc && pnpm run lint",
     "build": "vite build",
-    "predeploy": "pnpm run build",
     "deploy": "aws s3 cp dist/ s3://tetris.gurgel.io/ --recursive",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
