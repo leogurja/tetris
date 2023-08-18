@@ -16,7 +16,10 @@ interface ButtonProps {
   >; // tipo dos ícones do heroicons
 }
 
-export function Button({ onClick, Icon }: PropsWithoutRef<ButtonProps>) {
+export default function Button({
+  onClick,
+  Icon,
+}: PropsWithoutRef<ButtonProps>) {
   return (
     <span
       className="bg-neutral-600 sm:p-2 rounded-md flex justify-center items-center"

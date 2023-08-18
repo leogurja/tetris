@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { I18n } from "../../i18n/I18n";
-import { ExternalLink } from "./ExternalLink";
+import I18n from "../../i18n/I18n";
+import ExternalLink from "./ExternalLink";
 
-export function Nav() {
+export default function Nav() {
   const { t } = useTranslation();
 
   return (

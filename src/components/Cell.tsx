@@ -5,7 +5,7 @@ interface Props {
   upcoming?: boolean;
 }
 
-export function Cell({ type, upcoming = false }: Props) {
+export default function Cell({ type, upcoming = false }: Props) {
   return (
     <div
       className={`aspect-square flex border sm:border-2 border-neutral-900 ${type} ${

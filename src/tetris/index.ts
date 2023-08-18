@@ -1,53 +1,40 @@
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-import { useCallback, useEffect } from "react";
-import { Floor } from "./floor";
-import { Piece } from "./piece";
-import { useAudio } from "./useAudio";
-import { useKeyboard } from "./useKeyboard";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useInterval from "../hooks/useInterval";
+import useKeyboard from "../hooks/useKeyboard";
+import usePersistedState from "../hooks/usePersistedState";
+import audioFiles from "./audioFiles";
+import Floor from "./floor";
+import GameState from "./gameState";
+import Piece from "./piece";
+import render from "./render";
 
-export { render } from "./render";
-export { type BlockType, type BoardType } from "./types";
-export { Piece };
-
-export enum GameState {
-  Playing = "Playing",
-  GameOver = "GameOver",
-  Paused = "Paused",
-}
-
-// state
-export const pieceAtom = atom(Piece.take());
-export const floorAtom = atom(new Floor());
-export const scoreAtom = atom(0);
-export const recordAtom = atomWithStorage("record", 0);
-export const gameStateAtom = atom(GameState.Paused);
-export const levelAtom = atom((get) =>
-  Math.min(Math.floor(get(scoreAtom) / 1000), 15)
-);
-
-// internals
-const isAcceleratedAtom = atom(false);
-const tickRateAtom = atom(
-  (get) => (0.8 - get(levelAtom) * 0.007) ** get(levelAtom) * 1000
-);
-
-export function useTetris() {
-  const { play, playMusic, pauseMusic } = useAudio();
-
+export default function useTetris() {
   // state
-  const [piece, setPiece] = useAtom(pieceAtom);
-  const [isAccelerated, setIsAccelerated] = useAtom(isAcceleratedAtom);
-  const [score, setScore] = useAtom(scoreAtom);
-  const [floor, setFloor] = useAtom(floorAtom);
-  const [gameState, setGameState] = useAtom(gameStateAtom);
-  const tickRate = useAtomValue(tickRateAtom);
-  const level = useAtomValue(levelAtom);
-  const setRecord = useSetAtom(recordAtom);
+  const [piece, setPiece] = useState(() => Piece.take());
+  const [floor, setFloor] = useState(() => new Floor());
+  const [isAccelerated, setIsAccelerated] = useState(false);
+  const [score, setScore] = useState(0);
+  const [gameState, setGameState] = useState(GameState.Paused);
+  const [record, setRecord] = usePersistedState(0, "record");
+  const [musicVolume, setMusicVolume] = usePersistedState(30, "musicVolume");
+  const [volume, setVolume] = usePersistedState(30, "volume");
 
   // derived state
-  const calculatedTickRate = isAccelerated ? 50 : tickRate;
+  const level = Math.min(Math.floor(score / 1000), 15);
+  const tickRate = (0.8 - level * 0.007) ** level * 1000;
+  const effectiveTickRate =
+    gameState === GameState.Playing ? (isAccelerated ? 50 : tickRate) : 0;
+  const board = useMemo(() => render(piece, floor), [piece, floor]);
 
+  // actions
+  const play = useCallback(
+    (audio: keyof typeof audioFiles) => {
+      const clone = audioFiles[audio].cloneNode(true) as HTMLAudioElement;
+      clone.volume = volume / 100;
+      clone.play();
+    },
+    [volume]
+  );
   const update = useCallback(() => {
     setPiece((piece) => {
       const updatedPiece = piece.translate(0, 1);
@@ -58,19 +45,33 @@ export function useTetris() {
         setScore((s) => s + addedScore);
         const newPiece = Piece.take();
 
-        if (newPiece.collides(floor)) setGameState(GameState.GameOver);
+        if (newPiece.collides(floor)) {
+          setGameState(GameState.GameOver);
+          play("gameOver");
+          setRecord((prev) => Math.max(prev, score));
+        }
         return newPiece;
       }
 
       return updatedPiece;
     });
-  }, [setScore, floor, setPiece, setGameState, play]);
+  }, [setScore, floor, setPiece, setGameState, play, score, setRecord]);
 
-  const reset = useCallback(() => {
-    setFloor(new Floor());
-    setPiece(Piece.take());
-    setScore(0);
-  }, [setFloor, setPiece, setScore]);
+  const toggleGameState = useCallback(() => {
+    setGameState((p) => {
+      switch (p) {
+        case GameState.Playing:
+          return GameState.Paused;
+        case GameState.Paused:
+          return GameState.Playing;
+        case GameState.GameOver:
+          setFloor(new Floor());
+          setPiece(Piece.take());
+          setScore(0);
+          return GameState.Playing;
+      }
+    });
+  }, [setFloor, setPiece, setScore, setGameState]);
 
   // keyboard events
   useKeyboard({
@@ -119,35 +120,34 @@ export function useTetris() {
     allowRepeat: ["ArrowLeft", "ArrowRight"],
   });
 
-  // handle gameState change
-  useEffect(() => {
-    switch (gameState) {
-      case GameState.GameOver:
-        play("gameOver");
-        pauseMusic();
-        setRecord((prev) => Math.max(prev, score));
-        break;
-      case GameState.Playing:
-        playMusic();
-        break;
-      case GameState.Paused:
-        pauseMusic();
-        break;
-    }
-  }, [play, setRecord, score, gameState, pauseMusic, playMusic]);
-
   // game loop
-  useEffect(() => {
-    if (gameState !== GameState.Playing) return;
-
-    const intervalId = setInterval(update, calculatedTickRate);
-    return () => clearInterval(intervalId);
-  }, [update, gameState, isAccelerated, calculatedTickRate]);
+  useInterval(update, effectiveTickRate);
 
   // play levelup sound
   useEffect(() => {
     if (level !== 0) play("levelUp");
   }, [level, play]);
 
-  return { reset };
+  // music
+  useEffect(() => {
+    if (gameState === GameState.Playing) {
+      audioFiles.korobeiniki.volume = musicVolume / 100;
+      audioFiles.korobeiniki.play();
+    } else {
+      audioFiles.korobeiniki.pause();
+    }
+  }, [gameState, musicVolume]);
+
+  return {
+    toggleGameState,
+    gameState,
+    board,
+    level,
+    record,
+    score,
+    volume,
+    setVolume,
+    musicVolume,
+    setMusicVolume,
+  };
 }

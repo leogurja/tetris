@@ -4,7 +4,7 @@ interface FlagProps {
   onClick: () => void;
 }
 
-export function Flag({ image, isSelected, onClick }: FlagProps) {
+export default function Flag({ image, isSelected, onClick }: FlagProps) {
   return (
     <img
       alt="flag"

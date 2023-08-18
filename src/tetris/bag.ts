@@ -1,4 +1,4 @@
-export class Bag<T> {
+export default class Bag<T> {
   bag: T[] = [];
   constructor(private items: T[]) {}
 

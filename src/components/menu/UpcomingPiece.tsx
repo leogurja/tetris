@@ -1,17 +1,17 @@
+import { For } from "million/react";
 import { useMemo } from "react";
-import { BlockType, Piece } from "../../tetris";
-import { Cell } from "../Cell";
+import Piece from "../../tetris/piece";
+import { BoardType } from "../../tetris/types";
+import Cell from "../Cell";
 
-export function UpcomingPiece() {
+export default function UpcomingPiece() {
   const upcomingPiece = Piece.peek();
 
-  const board = useMemo(() => {
-    const board = Array(4)
-      .fill([])
-      .map(() => ["", "", "", ""] as BlockType[]);
+  const board = useMemo<BoardType>(() => {
+    const board = Array(4 * 4).fill("");
 
     upcomingPiece.blocks.forEach((b) => {
-      board[b.y][b.x] = b.type;
+      board[b.y * 4 + b.x] = b.type;
     });
 
     return board;
@@ -19,11 +19,9 @@ export function UpcomingPiece() {
 
   return (
     <div className="grid grid-cols-4 grow place-content-center rounded-md p-2 select-none bg-neutral-900">
-      {board.map((row, rowIndex) =>
-        row.map((cell, cellIndex) => (
-          <Cell key={`${rowIndex}${cellIndex}`} upcoming type={cell} />
-        ))
-      )}
+      <For each={board}>
+        {(cell, cellIndex) => <Cell type={cell} upcoming key={cellIndex} />}
+      </For>
     </div>
   );
 }

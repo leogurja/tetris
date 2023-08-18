@@ -5,7 +5,11 @@ interface SliderProps {
   setValue: (value: number) => void;
 }
 
-export function Slider({ value, setValue }: PropsWithoutRef<SliderProps>) {
+// million-ignore
+export default function Slider({
+  value,
+  setValue,
+}: PropsWithoutRef<SliderProps>) {
   return (
     <fieldset>
       <input

@@ -1,10 +1,10 @@
-import { Block } from "./block";
+import Block from "./block";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
-import { Floor } from "./floor";
-import { Piece } from "./piece";
+import Floor from "./floor";
+import Piece from "./piece";
 import { BoardType } from "./types";
 
-export function render(piece: Piece, floor: Floor) {
+export default function render(piece: Piece, floor: Floor) {
   const board = getEmptyBoard();
   floor.blocks.forEach((b) => drawBlock(b, board));
   piece.project(floor).blocks.forEach((b) => drawBlock(b, board, true));

@@ -1,6 +1,6 @@
-import { Bag } from "./bag";
-import { Block } from "./block";
-import { Floor } from "./floor";
+import Bag from "./bag";
+import Block from "./block";
+import Floor from "./floor";
 import { PieceType } from "./types";
 
 const bag = new Bag([
@@ -74,7 +74,7 @@ interface PieceOptions {
   type: PieceType;
 }
 
-export class Piece {
+export default class Piece {
   blocks: Block[];
   type: PieceType;
 

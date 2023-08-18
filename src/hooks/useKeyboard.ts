@@ -8,11 +8,10 @@ interface useKeyboardOptions<Key extends string, RepeatableKey extends Key> {
 
 const registeredEvents: Record<string, number> = {};
 
-export function useKeyboard<Key extends string, RepeatableKey extends Key>({
-  onKeyDown,
-  onKeyUp,
-  allowRepeat,
-}: useKeyboardOptions<Key, RepeatableKey>) {
+export default function useKeyboard<
+  Key extends string,
+  RepeatableKey extends Key
+>({ onKeyDown, onKeyUp, allowRepeat }: useKeyboardOptions<Key, RepeatableKey>) {
   const press = useCallback(
     (key: Key) => {
       if (!(key in onKeyDown)) return false;

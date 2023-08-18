@@ -5,7 +5,7 @@ interface LabeledValueProps {
   name: string;
 }
 
-export function LabeledValue({
+export default function LabeledValue({
   children,
   name,
 }: PropsWithChildren<LabeledValueProps>) {

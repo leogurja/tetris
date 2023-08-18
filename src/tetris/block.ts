@@ -1,7 +1,7 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
 import { PieceType } from "./types";
 
-export class Block {
+export default class Block {
   constructor(public x: number, public y: number, public type: PieceType) {}
 
   translate(x: number, y: number) {
