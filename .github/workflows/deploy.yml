@@ -18,7 +18,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Check
-        run: tsc && npm run lint
+        run: npm run ci:check
       - name: Build
         run: npm run build
       - name: Deploy

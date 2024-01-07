@@ -3,12 +3,12 @@ import Board from "./Board";
 import Menu from "./menu";
 
 export default function Game() {
-  const tetris = useTetris();
+	const tetris = useTetris();
 
-  return (
-    <main className="container mx-auto grow flex justify-center bg-neutral-800 text-white gap-2 sm:gap-8">
-      <Board {...tetris} />
-      <Menu {...tetris} />
-    </main>
-  );
+	return (
+		<main className="container mx-auto grow flex justify-center bg-neutral-800 text-white gap-2 sm:gap-8">
+			<Board {...tetris} />
+			<Menu {...tetris} />
+		</main>
+	);
 }

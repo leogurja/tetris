@@ -5,23 +5,23 @@ import { BoardType } from "../../tetris/types";
 import Cell from "../Cell";
 
 export default function UpcomingPiece() {
-  const upcomingPiece = Piece.peek();
+	const upcomingPiece = Piece.peek();
 
-  const board = useMemo<BoardType>(() => {
-    const board = Array(4 * 4).fill("");
+	const board = useMemo<BoardType>(() => {
+		const board = Array(4 * 4).fill("");
 
-    upcomingPiece.blocks.forEach((b) => {
-      board[b.y * 4 + b.x] = b.type;
-    });
+		for (const block of upcomingPiece.blocks) {
+			board[block.y * 4 + block.x] = block.type;
+		}
 
-    return board;
-  }, [upcomingPiece]);
+		return board;
+	}, [upcomingPiece]);
 
-  return (
-    <div className="grid grid-cols-4 grow place-content-center rounded-md p-2 select-none bg-neutral-900">
-      <For each={board}>
-        {(cell, cellIndex) => <Cell type={cell} upcoming key={cellIndex} />}
-      </For>
-    </div>
-  );
+	return (
+		<div className="grid grid-cols-4 grow place-content-center rounded-md p-2 select-none bg-neutral-900">
+			<For each={board}>
+				{(cell, cellIndex) => <Cell type={cell} upcoming key={cellIndex} />}
+			</For>
+		</div>
+	);
 }

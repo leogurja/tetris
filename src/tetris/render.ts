@@ -4,19 +4,21 @@ import Floor from "./floor";
 import Piece from "./piece";
 import { BoardType } from "./types";
 
-export default function render(piece: Piece, floor: Floor) {
-  const board = getEmptyBoard();
-  floor.blocks.forEach((b) => drawBlock(b, board));
-  piece.project(floor).blocks.forEach((b) => drawBlock(b, board, true));
-  piece.blocks.forEach((b) => drawBlock(b, board));
-  return board;
+export default function render(floor: Floor, piece: Piece) {
+	const board = getEmptyBoard();
+	drawBlocks(board, floor.blocks);
+	drawBlocks(board, piece.project(floor).blocks, true);
+	drawBlocks(board, piece.blocks);
+	return board;
 }
 
-function drawBlock(block: Block, board: BoardType, projection = false) {
-  if (block.y < 0) return;
-  board[block.y * BOARD_WIDTH + block.x] = projection ? "P" : block.type;
+function drawBlocks(board: BoardType, blocks: Block[], projection = false) {
+	for (const block of blocks) {
+		if (block.y < 0) return;
+		board[block.y * BOARD_WIDTH + block.x] = projection ? "P" : block.type;
+	}
 }
 
 function getEmptyBoard(): BoardType {
-  return Array(BOARD_HEIGHT * BOARD_WIDTH).fill("");
+	return Array(BOARD_HEIGHT * BOARD_WIDTH).fill("");
 }
