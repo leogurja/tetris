@@ -12,9 +12,6 @@ import UpcomingPiece from "./UpcomingPiece";
 interface MenuProps {
 	gameState: GameState;
 	toggleGameState: () => void;
-	level: number;
-	score: number;
-	record: number;
 	isMuted: boolean;
 	toggleIsMuted: () => void;
 }
