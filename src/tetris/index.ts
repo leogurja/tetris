@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useInterval from "../hooks/useInterval";
 import useKeyboard from "../hooks/useKeyboard";
 import usePersistedState from "../hooks/usePersistedState";
-import audioFiles from "./audioFiles";
+import useAudio, { Sfx } from "./useAudio";
 import Floor from "./floor";
 import GameState from "./gameState";
 import Piece from "./piece";
@@ -18,38 +18,31 @@ export default function useTetris() {
 	const [score, setScore] = useState(0);
 	const [gameState, setGameState] = useState(GameState.Paused);
 	const [record, setRecord] = usePersistedState(0, "record");
-	const [musicVolume, setMusicVolume] = usePersistedState(30, "musicVolume");
-	const [volume, setVolume] = usePersistedState(30, "volume");
+	const { play, isMuted, setIsMuted } = useAudio(gameState);
 
 	// derived state
 	const level = Math.min(Math.floor(score / 1000), 15);
-	const tickRate = (0.8 - level * 0.007) ** level * 1000;
-	const effectiveTickRate =
-		gameState === GameState.Playing ? (isAccelerated ? 50 : tickRate) : 0;
+	const tickRate = () => {
+		if (gameState !== GameState.Playing) return 0;
+		if (isAccelerated) return 50;
+
+		return (0.8 - level * 0.007) ** level * 1000;
+	};
 	const board = useMemo(() => render(floor, piece), [piece, floor]);
 
-	// actions
-	const play = useCallback(
-		(audio: keyof typeof audioFiles) => {
-			const clone = audioFiles[audio].cloneNode(true) as HTMLAudioElement;
-			clone.volume = volume / 100;
-			clone.play();
-		},
-		[volume],
-	);
 	const update = useCallback(() => {
 		setPiece((piece) => {
 			const updatedPiece = piece.translate(0, 1);
 
 			if (updatedPiece.collides(floor)) {
 				const addedScore = floor.push(piece.blocks);
-				if (addedScore > 0) play("clear");
+				if (addedScore > 0) play(Sfx.Clear);
 				setScore((s) => s + addedScore);
 				const newPiece = Piece.take();
 
 				if (newPiece.collides(floor)) {
 					setGameState(GameState.GameOver);
-					play("gameOver");
+					play(Sfx.GameOver);
 					setRecord((prev) => Math.max(prev, score));
 				}
 				return newPiece;
@@ -57,7 +50,7 @@ export default function useTetris() {
 
 			return updatedPiece;
 		});
-	}, [floor, play, score, setRecord]);
+	}, [floor, score, setRecord, play]);
 
 	const toggleGameState = useCallback(() => {
 		setGameState((p) => {
@@ -81,7 +74,7 @@ export default function useTetris() {
 			ArrowDown: () => setIsAccelerated(true),
 			ArrowUp: () => {
 				if (gameState !== GameState.Playing) return;
-				play("click");
+				play(Sfx.Click);
 				setPiece((piece) => {
 					const rotatedPiece = piece.rotate();
 					if (rotatedPiece.collides(floor)) return piece;
@@ -91,7 +84,7 @@ export default function useTetris() {
 			},
 			ArrowLeft: () => {
 				if (gameState !== GameState.Playing) return;
-				play("click");
+				play(Sfx.Click);
 				setPiece((piece) => {
 					const movedPiece = piece.translate(-1, 0);
 					if (movedPiece.collides(floor)) return piece;
@@ -100,7 +93,7 @@ export default function useTetris() {
 			},
 			ArrowRight: () => {
 				if (gameState !== GameState.Playing) return;
-				play("click");
+				play(Sfx.Click);
 				setPiece((piece) => {
 					const movedPiece = piece.translate(1, 0);
 					if (movedPiece.collides(floor)) return piece;
@@ -109,9 +102,9 @@ export default function useTetris() {
 			},
 			" ": () => {
 				if (gameState !== GameState.Playing) return;
-				play("drop");
+				play(Sfx.Drop);
 				const addedScore = floor.push(piece.project(floor).blocks);
-				if (addedScore > 0) play("clear");
+				if (addedScore > 0) play(Sfx.Clear);
 				setScore((s) => s + addedScore);
 				setPiece(Piece.take());
 			},
@@ -123,22 +116,12 @@ export default function useTetris() {
 	});
 
 	// game loop
-	useInterval(update, effectiveTickRate);
+	useInterval(update, tickRate());
 
 	// play levelup sound
 	useEffect(() => {
-		if (level !== 0) play("levelUp");
+		if (level !== 0) play(Sfx.LevelUp);
 	}, [level, play]);
-
-	// music
-	useEffect(() => {
-		if (gameState === GameState.Playing) {
-			audioFiles.korobeiniki.volume = musicVolume / 100;
-			audioFiles.korobeiniki.play();
-		} else {
-			audioFiles.korobeiniki.pause();
-		}
-	}, [gameState, musicVolume]);
 
 	return {
 		toggleGameState,
@@ -147,9 +130,7 @@ export default function useTetris() {
 		level,
 		record,
 		score,
-		volume,
-		setVolume,
-		musicVolume,
-		setMusicVolume,
+		isMuted,
+		setIsMuted,
 	};
 }
