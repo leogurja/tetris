@@ -16,14 +16,14 @@ interface MenuProps {
 	score: number;
 	record: number;
 	isMuted: boolean;
-	setIsMuted: (isMuted: boolean) => void;
+	toggleIsMuted: () => void;
 }
 
 export default function Menu({
 	gameState,
 	toggleGameState,
 	isMuted,
-	setIsMuted,
+	toggleIsMuted,
 }: MenuProps) {
 	const icons: Record<GameState, typeof ArrowPathIcon> = {
 		GameOver: ArrowPathIcon,
@@ -36,7 +36,7 @@ export default function Menu({
 			<UpcomingPiece />
 			<Button onClick={toggleGameState} Icon={icons[gameState]} />
 			<Button
-				onClick={() => setIsMuted(!isMuted)}
+				onClick={toggleIsMuted}
 				Icon={isMuted ? SpeakerXMarkIcon : SpeakerWaveIcon}
 			/>
 		</aside>

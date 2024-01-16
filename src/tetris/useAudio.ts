@@ -23,6 +23,10 @@ const music = document.getElementById("korobeiniki") as HTMLAudioElement;
 export default function useAudio(gameState: GameState) {
 	const [isMuted, setIsMuted] = useState(false);
 
+	const toggleIsMuted = useCallback(() => {
+		setIsMuted((p) => !p);
+	}, []);
+
 	// music
 	useEffect(() => {
 		if (gameState === GameState.Playing && !isMuted) {
@@ -35,7 +39,7 @@ export default function useAudio(gameState: GameState) {
 
 	return {
 		isMuted,
-		setIsMuted,
+		toggleIsMuted,
 		play: useCallback(
 			(audio: Sfx) => {
 				if (isMuted) return;

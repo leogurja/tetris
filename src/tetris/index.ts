@@ -18,7 +18,7 @@ export default function useTetris() {
 	const [score, setScore] = useState(0);
 	const [gameState, setGameState] = useState(GameState.Paused);
 	const [record, setRecord] = usePersistedState(0, "record");
-	const { play, isMuted, setIsMuted } = useAudio(gameState);
+	const { play, isMuted, toggleIsMuted } = useAudio(gameState);
 
 	// derived state
 	const level = Math.min(Math.floor(score / 1000), 15);
@@ -131,6 +131,6 @@ export default function useTetris() {
 		record,
 		score,
 		isMuted,
-		setIsMuted,
+		toggleIsMuted,
 	};
 }
