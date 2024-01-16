@@ -1,4 +1,4 @@
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { PropsWithChildren } from "react";
 
 interface ExternalLinkProps {

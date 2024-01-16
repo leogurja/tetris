@@ -7,7 +7,7 @@ import "./styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLDivElement).render(
 	<React.StrictMode>
-		<div className="h-screen flex flex-col">
+		<div className="h-screen flex flex-col text-white">
 			<Nav />
 			<Game />
 		</div>

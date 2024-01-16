@@ -6,7 +6,7 @@ export default function Nav() {
 	const { t } = useTranslation();
 
 	return (
-		<nav className="text-white flex items-center border-b-neutral-700 border-b p-3 px-6 mb-5">
+		<nav className="flex items-center border-b-neutral-700 border-b p-3 px-6">
 			<h1 className="text-lg font-bold">Tetris</h1>
 
 			<div className="ml-auto flex items-center gap-5">

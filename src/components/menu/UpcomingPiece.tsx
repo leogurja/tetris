@@ -1,8 +1,6 @@
-import { For } from "million/react";
 import { useMemo } from "react";
 import Piece from "../../tetris/piece";
 import { BoardType } from "../../tetris/types";
-import Cell from "../Cell";
 
 export default function UpcomingPiece() {
 	const upcomingPiece = Piece.peek();
@@ -18,10 +16,14 @@ export default function UpcomingPiece() {
 	}, [upcomingPiece]);
 
 	return (
-		<div className="grid grid-cols-4 grow place-content-center rounded-md p-2 select-none bg-neutral-900">
-			<For each={board}>
-				{(cell, cellIndex) => <Cell type={cell} upcoming key={cellIndex} />}
-			</For>
+		<div className="grid grid-cols-4 w-full gap-px aspect-square place-content-center rounded-xl p-1 select-none bg-neutral-900">
+			{board.map((cell, index) => (
+				<div
+					className={`upcoming aspect-square flex border sm:border-2 border-transparent ${cell}`}
+					// biome-ignore lint/suspicious/noArrayIndexKey: the order of the array never changes
+					key={index}
+				/>
+			))}
 		</div>
 	);
 }

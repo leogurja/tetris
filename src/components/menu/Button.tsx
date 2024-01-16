@@ -21,12 +21,12 @@ export default function Button({
 	Icon,
 }: PropsWithoutRef<ButtonProps>) {
 	return (
+		// biome-ignore lint/a11y/useKeyWithClickEvents: Keys must be captured for movement
 		<span
-			className="bg-neutral-600 sm:p-2 rounded-md flex justify-center items-center"
+			className="bg-neutral-600 p-2 w-full rounded-md flex justify-center items-center"
 			onClick={onClick}
-			onKeyDown={() => {}}
 		>
-			<Icon className="w-4 sm:w-6 aspect-square" />
+			<Icon className="w-6 aspect-square" />
 		</span>
 	);
 }

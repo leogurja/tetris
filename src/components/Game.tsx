@@ -1,14 +1,22 @@
 import useTetris from "../tetris";
 import Board from "./Board";
+import Statistics from "./Statistics";
 import Menu from "./menu";
+import Controls from "./controls";
 
 export default function Game() {
 	const tetris = useTetris();
 
 	return (
-		<main className="container mx-auto grow flex justify-center bg-neutral-800 text-white gap-2 sm:gap-8">
-			<Board {...tetris} />
-			<Menu {...tetris} />
-		</main>
+		<>
+			<main className="aspect-[9/16] max-w-full h-full flex flex-col items-center p-2">
+				<Statistics {...tetris} />
+				<section className="flex h-full w-full justify-center">
+					<Board {...tetris} />
+					<Menu {...tetris} />
+				</section>
+				<Controls />
+			</main>
+		</>
 	);
 }

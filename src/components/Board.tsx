@@ -1,7 +1,5 @@
-import { For } from "million/react";
 import GameState from "../tetris/gameState";
 import { BoardType } from "../tetris/types";
-import Cell from "./Cell";
 
 interface BoardProps {
 	gameState: GameState;
@@ -10,14 +8,18 @@ interface BoardProps {
 
 export default function Board({ gameState, board }: BoardProps) {
 	return (
-		<div
-			className={`grid grid-cols-10 self-stretch place-content-end aspect-[1/2] rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
+		<main
+			className={`aspect-[1/2] place-content-end gap-px grid grid-cols-10 rounded-2xl p-2 select-none border border-neutral-700 shadow-neutral-950 shadow-md bg-neutral-900 transition-all ${
 				gameState === GameState.Playing ? "" : "blur-sm"
 			}`}
 		>
-			<For each={board}>
-				{(cell, cellIndex) => <Cell type={cell} key={cellIndex} />}
-			</For>
-		</div>
+			{board.map((cell, index) => (
+				<div
+					className={`w-full aspect-square ${cell}`}
+					// biome-ignore lint/suspicious/noArrayIndexKey: the order of the array never changes
+					key={index}
+				/>
+			))}
+		</main>
 	);
 }
