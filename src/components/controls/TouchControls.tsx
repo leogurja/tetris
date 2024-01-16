@@ -1,9 +1,9 @@
 import {
-	ArrowUturnRightIcon,
 	ArrowDownIcon,
+	ArrowDownTrayIcon,
 	ArrowLeftIcon,
 	ArrowRightIcon,
-	ArrowDownTrayIcon,
+	ArrowUturnRightIcon,
 } from "@heroicons/react/20/solid";
 import {
 	ForwardRefExoticComponent,

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useInterval from "../hooks/useInterval";
 import useKeyboard from "../hooks/useKeyboard";
 import usePersistedState from "../hooks/usePersistedState";
-import useAudio, { Sfx } from "./useAudio";
 import Floor from "./floor";
 import GameState from "./gameState";
 import Piece from "./piece";
 import render from "./render";
+import useAudio, { Sfx } from "./useAudio";
 
 export { type BlockType } from "./types";
 

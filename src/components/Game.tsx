@@ -1,8 +1,8 @@
 import useTetris from "../tetris";
 import Board from "./Board";
 import Statistics from "./Statistics";
-import Menu from "./menu";
 import Controls from "./controls";
+import Menu from "./menu";
 
 export default function Game() {
 	const tetris = useTetris();
