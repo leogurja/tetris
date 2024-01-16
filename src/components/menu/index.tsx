@@ -6,9 +6,9 @@ import {
 	SpeakerXMarkIcon,
 } from "@heroicons/react/20/solid";
 import GameState from "../../tetris/gameState";
+import { TetrisSettings } from "../../tetris/types";
 import Button from "./Button";
 import UpcomingPiece from "./UpcomingPiece";
-import { TetrisSettings } from "../../tetris/types";
 
 export default function Menu({
 	gameState,

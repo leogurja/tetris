@@ -5,8 +5,8 @@ import Floor from "./floor";
 import GameState from "./gameState";
 import Piece from "./piece";
 import render from "./render";
-import useAudio, { Sfx } from "./useAudio";
 import { TetrisActions, TetrisGame, TetrisSettings } from "./types";
+import useAudio, { Sfx } from "./useAudio";
 
 export { type BlockType } from "./types";
 
