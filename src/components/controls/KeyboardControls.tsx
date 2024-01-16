@@ -6,9 +6,30 @@ import {
 } from "@heroicons/react/20/solid";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
+import useKeyboard from "../../hooks/useKeyboard";
+import { TetrisActions } from "../../tetris/types";
 
-export default function KeyboardControls() {
+interface KeyboardControlsProps {
+	actions: TetrisActions;
+}
+
+export default function KeyboardControls({ actions }: KeyboardControlsProps) {
 	const { t } = useTranslation();
+
+	// keyboard events
+	useKeyboard({
+		onKeyDown: {
+			ArrowDown: actions.startSoftDrop,
+			ArrowUp: actions.rotate,
+			ArrowLeft: actions.moveLeft,
+			ArrowRight: actions.moveRight,
+			" ": actions.hardDrop,
+		},
+		onKeyUp: {
+			ArrowDown: actions.stopSoftDrop,
+		},
+		allowRepeat: ["ArrowLeft", "ArrowRight"],
+	});
 
 	return (
 		<div className="w-[80%] mx-20 mb-1 h-28 rounded-2xl gap-2 grid grid-cols-4 place-content-evenly items-center p-2 mt-4 text-xs">

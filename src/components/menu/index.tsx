@@ -8,20 +8,14 @@ import {
 import GameState from "../../tetris/gameState";
 import Button from "./Button";
 import UpcomingPiece from "./UpcomingPiece";
-
-interface MenuProps {
-	gameState: GameState;
-	toggleGameState: () => void;
-	isMuted: boolean;
-	toggleIsMuted: () => void;
-}
+import { TetrisSettings } from "../../tetris/types";
 
 export default function Menu({
 	gameState,
 	toggleGameState,
 	isMuted,
 	toggleIsMuted,
-}: MenuProps) {
+}: TetrisSettings) {
 	const icons: Record<GameState, typeof ArrowPathIcon> = {
 		GameOver: ArrowPathIcon,
 		Playing: PauseIcon,

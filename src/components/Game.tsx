@@ -5,17 +5,17 @@ import Controls from "./controls";
 import Menu from "./menu";
 
 export default function Game() {
-	const tetris = useTetris();
+	const { game, settings, actions } = useTetris();
 
 	return (
 		<>
 			<main className="aspect-[9/16] max-w-full h-full flex flex-col items-center p-2">
-				<Statistics {...tetris} />
+				<Statistics {...game} />
 				<section className="flex h-full w-full justify-center">
-					<Board {...tetris} />
-					<Menu {...tetris} />
+					<Board {...game} />
+					<Menu {...settings} />
 				</section>
-				<Controls />
+				<Controls actions={actions} />
 			</main>
 		</>
 	);

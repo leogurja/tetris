@@ -1,16 +1,22 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useInterval from "../hooks/useInterval";
-import useKeyboard from "../hooks/useKeyboard";
 import usePersistedState from "../hooks/usePersistedState";
 import Floor from "./floor";
 import GameState from "./gameState";
 import Piece from "./piece";
 import render from "./render";
 import useAudio, { Sfx } from "./useAudio";
+import { TetrisActions, TetrisGame, TetrisSettings } from "./types";
 
 export { type BlockType } from "./types";
 
-export default function useTetris() {
+interface Tetris {
+	game: TetrisGame;
+	settings: TetrisSettings;
+	actions: TetrisActions;
+}
+
+export default function useTetris(): Tetris {
 	// state
 	const [piece, setPiece] = useState(() => Piece.take());
 	const [floor, setFloor] = useState(() => new Floor());
@@ -30,6 +36,7 @@ export default function useTetris() {
 	};
 	const board = useMemo(() => render(floor, piece), [piece, floor]);
 
+	// actions
 	const update = useCallback(() => {
 		setPiece((piece) => {
 			const updatedPiece = piece.translate(0, 1);
@@ -68,52 +75,53 @@ export default function useTetris() {
 		});
 	}, []);
 
-	// keyboard events
-	useKeyboard({
-		onKeyDown: {
-			ArrowDown: () => setIsAccelerated(true),
-			ArrowUp: () => {
-				if (gameState !== GameState.Playing) return;
-				play(Sfx.Click);
-				setPiece((piece) => {
-					const rotatedPiece = piece.rotate();
-					if (rotatedPiece.collides(floor)) return piece;
+	const startSoftDrop = useCallback(() => {
+		setIsAccelerated(true);
+	}, []);
 
-					return rotatedPiece;
-				});
-			},
-			ArrowLeft: () => {
-				if (gameState !== GameState.Playing) return;
-				play(Sfx.Click);
-				setPiece((piece) => {
-					const movedPiece = piece.translate(-1, 0);
-					if (movedPiece.collides(floor)) return piece;
-					return movedPiece;
-				});
-			},
-			ArrowRight: () => {
-				if (gameState !== GameState.Playing) return;
-				play(Sfx.Click);
-				setPiece((piece) => {
-					const movedPiece = piece.translate(1, 0);
-					if (movedPiece.collides(floor)) return piece;
-					return movedPiece;
-				});
-			},
-			" ": () => {
-				if (gameState !== GameState.Playing) return;
-				play(Sfx.Drop);
-				const addedScore = floor.push(piece.project(floor).blocks);
-				if (addedScore > 0) play(Sfx.Clear);
-				setScore((s) => s + addedScore);
-				setPiece(Piece.take());
-			},
-		},
-		onKeyUp: {
-			ArrowDown: () => setIsAccelerated(false),
-		},
-		allowRepeat: ["ArrowLeft", "ArrowRight"],
-	});
+	const stopSoftDrop = useCallback(() => {
+		setIsAccelerated(false);
+	}, []);
+
+	const rotate = useCallback(() => {
+		if (gameState !== GameState.Playing) return;
+		play(Sfx.Click);
+		setPiece((piece) => {
+			const rotatedPiece = piece.rotate();
+			if (rotatedPiece.collides(floor)) return piece;
+
+			return rotatedPiece;
+		});
+	}, [gameState, floor, play]);
+
+	const moveLeft = useCallback(() => {
+		if (gameState !== GameState.Playing) return;
+		play(Sfx.Click);
+		setPiece((piece) => {
+			const movedPiece = piece.translate(-1, 0);
+			if (movedPiece.collides(floor)) return piece;
+			return movedPiece;
+		});
+	}, [gameState, floor, play]);
+
+	const moveRight = useCallback(() => {
+		if (gameState !== GameState.Playing) return;
+		play(Sfx.Click);
+		setPiece((piece) => {
+			const movedPiece = piece.translate(1, 0);
+			if (movedPiece.collides(floor)) return piece;
+			return movedPiece;
+		});
+	}, [gameState, floor, play]);
+
+	const hardDrop = useCallback(() => {
+		if (gameState !== GameState.Playing) return;
+		play(Sfx.Drop);
+		const addedScore = floor.push(piece.project(floor).blocks);
+		if (addedScore > 0) play(Sfx.Clear);
+		setScore((s) => s + addedScore);
+		setPiece(Piece.take());
+	}, [gameState, play, floor, piece]);
 
 	// game loop
 	useInterval(update, tickRate());
@@ -124,13 +132,26 @@ export default function useTetris() {
 	}, [level, play]);
 
 	return {
-		toggleGameState,
-		gameState,
-		board,
-		level,
-		record,
-		score,
-		isMuted,
-		toggleIsMuted,
+		game: {
+			level,
+			score,
+			record,
+			gameState,
+			board,
+		},
+		settings: {
+			gameState,
+			isMuted,
+			toggleIsMuted,
+			toggleGameState,
+		},
+		actions: {
+			startSoftDrop,
+			stopSoftDrop,
+			moveLeft,
+			moveRight,
+			rotate,
+			hardDrop,
+		},
 	};
 }

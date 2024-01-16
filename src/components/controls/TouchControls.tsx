@@ -5,51 +5,70 @@ import {
 	ArrowRightIcon,
 	ArrowUturnRightIcon,
 } from "@heroicons/react/20/solid";
-import {
-	ForwardRefExoticComponent,
-	PropsWithoutRef,
-	RefAttributes,
-	SVGProps,
-} from "react";
+import { PropsWithChildren } from "react";
+import { TetrisActions } from "../../tetris/types";
 
-export default function TouchControls() {
+interface TouchControlsProps {
+	actions: TetrisActions;
+}
+
+export default function TouchControls({ actions }: TouchControlsProps) {
 	return (
 		<footer className="flex w-full justify-evenly justify-self-end">
 			<div className="flex items-center justify-center p-2">
 				<div className="grid grid-cols-3 place-content-stretch">
 					<div />
-					<Key className="w-16" Icon={ArrowUturnRightIcon} />
+					<Key onClick={actions.rotate}>
+						<ArrowUturnRightIcon className="w-16" />
+					</Key>
 					<div />
-					<Key className="w-16" Icon={ArrowLeftIcon} />
+					<Key onClick={actions.moveLeft}>
+						<ArrowLeftIcon className="w-16" />
+					</Key>
 					<div />
-					<Key className="w-16" Icon={ArrowRightIcon} />
+					<Key onClick={actions.moveRight}>
+						<ArrowRightIcon className="w-16" />
+					</Key>
 					<div />
-					<Key className="w-16" Icon={ArrowDownIcon} />
+					<Key
+						onTouchStart={actions.startSoftDrop}
+						onTouchEnd={actions.stopSoftDrop}
+					>
+						<ArrowDownIcon className="w-16" />
+					</Key>
 					<div />
 				</div>
 			</div>
 			<div className="flex items-center justify-center p-2">
-				<Key className="w-20" Icon={ArrowDownTrayIcon} />
+				<Key onClick={actions.hardDrop}>
+					<ArrowDownTrayIcon className="w-20" />
+				</Key>
 			</div>
 		</footer>
 	);
 }
 
 interface KeyProps {
-	large?: boolean;
-	className: string;
-	Icon: ForwardRefExoticComponent<
-		Omit<SVGProps<SVGSVGElement>, "ref"> & {
-			title?: string;
-			titleId?: string;
-		} & RefAttributes<SVGSVGElement>
-	>; // tipo dos ícones do heroicons
+	onClick?: () => void;
+	onTouchStart?: () => void;
+	onTouchEnd?: () => void;
 }
 
-function Key({ Icon, className }: PropsWithoutRef<KeyProps>) {
+function Key({
+	children,
+	onClick,
+	onTouchStart,
+	onTouchEnd,
+}: PropsWithChildren<KeyProps>) {
 	return (
-		<Icon
-			className={`${className} p-4 aspect-square shadow-md font-medium rounded-lg bg-neutral-600 text-neutral-100 border-neutral-500`}
-		/>
+		<button
+			type="button"
+			className="p-4 aspect-square shadow-md font-medium rounded-lg bg-neutral-600 text-neutral-100 border-neutral-500"
+			onClick={onClick}
+			onTouchStart={onTouchStart}
+			onTouchEnd={onTouchEnd}
+		>
+			{children}
+		</button>
 	);
 }
