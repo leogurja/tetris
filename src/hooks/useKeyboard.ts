@@ -12,6 +12,7 @@ export default function useKeyboard<
 	Key extends string,
 	RepeatableKey extends Key,
 >({ onKeyDown, onKeyUp, allowRepeat }: useKeyboardOptions<Key, RepeatableKey>) {
+	// biome-ignore lint/correctness/useExhaustiveDependencies: rule seems to be bugged
 	const press = useCallback(
 		(key: Key) => {
 			if (!(key in onKeyDown)) return false;
@@ -28,12 +29,13 @@ export default function useKeyboard<
 
 			return true;
 		},
-		[allowRepeat, onKeyDown],
+		[onKeyDown, allowRepeat],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: rule seems to be bugged
 	const unpress = useCallback(
 		(key: Key) => {
-			if (!(key in onKeyDown)) return false;
+			if (!(key in onKeyUp)) return false;
 
 			if (isRepeatableKey(key, allowRepeat)) {
 				clearTimeout(registeredEvents[key]);
@@ -41,7 +43,7 @@ export default function useKeyboard<
 			onKeyUp[key]?.();
 			return true;
 		},
-		[allowRepeat, onKeyDown, onKeyUp],
+		[onKeyUp, allowRepeat],
 	);
 
 	useEffect(() => {
