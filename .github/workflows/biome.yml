@@ -1,4 +1,4 @@
-name: auto-format
+name: Check
 on: pull_request
 jobs:
   format:
