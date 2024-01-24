@@ -16,7 +16,7 @@ i18n
 				translation: {
 					volume: "Volume",
 					score: "Score",
-					record: "High Score",
+					highScore: "High Score",
 					level: "Level",
 					sourceCode: "Source Code",
 					portfolio: "Portfolio",
@@ -31,7 +31,7 @@ i18n
 				translation: {
 					volume: "Volume",
 					score: "Pontuação",
-					record: "Recorde",
+					highScore: "Recorde",
 					level: "Nível",
 					sourceCode: "Código Fonte",
 					portfolio: "Portfólio",
