@@ -1,9 +1,7 @@
 import { create } from "zustand";
-import useInterval from "../hooks/useInterval";
 import { Sfx, play } from "./audio";
 import Floor from "./floor";
 import GameState from "./gameState";
-import useHighScore from "./highScore";
 import Piece from "./piece";
 
 export { type BlockType } from "./types";
@@ -140,13 +138,3 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
 }));
 
 export default useTetrisStore;
-
-export function useTetris() {
-	const tetris = useTetrisStore();
-	const { highScore, save } = useHighScore();
-
-	const { play, isMuted, toggleIsMuted } = useAudio(gameState, score, level());
-
-	// game loop
-	useInterval(actions.update, tickRate());
-}
