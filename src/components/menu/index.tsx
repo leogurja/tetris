@@ -5,17 +5,16 @@ import {
 	SpeakerWaveIcon,
 	SpeakerXMarkIcon,
 } from "@heroicons/react/20/solid";
+import useTetrisStore from "../../tetris";
 import GameState from "../../tetris/gameState";
-import { TetrisSettings } from "../../tetris/types";
 import Button from "./Button";
 import UpcomingPiece from "./UpcomingPiece";
 
-export default function Menu({
-	gameState,
-	toggleGameState,
-	isMuted,
-	toggleIsMuted,
-}: TetrisSettings) {
+export default function Menu() {
+	const [gameState, toggleGameState, isMuted, toggleIsMuted] = useTetrisStore(
+		(t) => [t.gameState, t.toggleGameState, t.isMuted, t.toggleIsMuted],
+	);
+
 	const icons: Record<GameState, typeof ArrowPathIcon> = {
 		GameOver: ArrowPathIcon,
 		Playing: PauseIcon,

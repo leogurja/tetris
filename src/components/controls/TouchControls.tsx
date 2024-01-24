@@ -6,41 +6,43 @@ import {
 	ArrowUturnRightIcon,
 } from "@heroicons/react/20/solid";
 import { PropsWithChildren } from "react";
-import { TetrisActions } from "../../tetris/types";
+import useTetrisStore from "../../tetris";
 
-interface TouchControlsProps {
-	actions: TetrisActions;
-}
-
-export default function TouchControls({ actions }: TouchControlsProps) {
+export default function TouchControls() {
+	const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] =
+		useTetrisStore((t) => [
+			t.rotate,
+			t.moveLeft,
+			t.moveRight,
+			t.startSoftDrop,
+			t.stopSoftDrop,
+			t.hardDrop,
+		]);
 	return (
 		<footer className="flex w-full justify-evenly justify-self-end">
 			<div className="flex items-center justify-center p-2">
 				<div className="grid grid-cols-3 place-content-stretch">
 					<div />
-					<Key onClick={actions.rotate}>
+					<Key onClick={rotate}>
 						<ArrowUturnRightIcon className="w-16" />
 					</Key>
 					<div />
-					<Key onClick={actions.moveLeft}>
+					<Key onClick={moveLeft}>
 						<ArrowLeftIcon className="w-16" />
 					</Key>
 					<div />
-					<Key onClick={actions.moveRight}>
+					<Key onClick={moveRight}>
 						<ArrowRightIcon className="w-16" />
 					</Key>
 					<div />
-					<Key
-						onTouchStart={actions.startSoftDrop}
-						onTouchEnd={actions.stopSoftDrop}
-					>
+					<Key onTouchStart={startSoftDrop} onTouchEnd={stopSoftDrop}>
 						<ArrowDownIcon className="w-16" />
 					</Key>
 					<div />
 				</div>
 			</div>
 			<div className="flex items-center justify-center p-2">
-				<Key onClick={actions.hardDrop}>
+				<Key onClick={hardDrop}>
 					<ArrowDownTrayIcon className="w-20" />
 				</Key>
 			</div>
