@@ -42,7 +42,7 @@ export default function KeyboardControls() {
 		onKeyUp: {
 			ArrowDown: stopSoftDrop,
 		},
-		allowRepeat: ["ArrowLeft", "ArrowRight"],
+		allowRepeat: ["ArrowLeft", "ArrowRight", "ArrowUp"],
 	});
 
 	return (

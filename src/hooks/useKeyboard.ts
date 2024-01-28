@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 interface useKeyboardOptions<Key extends string, RepeatableKey extends Key> {
 	onKeyDown: Record<Key, () => void>;
@@ -6,69 +6,35 @@ interface useKeyboardOptions<Key extends string, RepeatableKey extends Key> {
 	allowRepeat: RepeatableKey[];
 }
 
-const registeredEvents: Record<string, number> = {};
-
 export default function useKeyboard<
 	Key extends string,
 	RepeatableKey extends Key,
 >({ onKeyDown, onKeyUp, allowRepeat }: useKeyboardOptions<Key, RepeatableKey>) {
-	// biome-ignore lint/correctness/useExhaustiveDependencies: rule seems to be bugged
-	const press = useCallback(
-		(key: Key) => {
-			if (!(key in onKeyDown)) return false;
-
-			if (isRepeatableKey(key, allowRepeat)) {
-				const keyLoop = () => {
-					onKeyDown[key]();
-					registeredEvents[key] = setTimeout(keyLoop, 200);
-				};
-				clearTimeout(registeredEvents[key]);
-				registeredEvents[key] = setTimeout(keyLoop, 500);
-			}
-			onKeyDown[key]();
-
-			return true;
-		},
-		[onKeyDown, allowRepeat],
-	);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: rule seems to be bugged
-	const unpress = useCallback(
-		(key: Key) => {
-			if (!(key in onKeyUp)) return false;
-
-			if (isRepeatableKey(key, allowRepeat)) {
-				clearTimeout(registeredEvents[key]);
-			}
-			onKeyUp[key]?.();
-			return true;
-		},
-		[onKeyUp, allowRepeat],
-	);
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const keyDownHandler = (event: KeyboardEvent) => {
-			if (press(event.key as Key)) event.preventDefault();
+			if (!(event.key in onKeyDown)) return;
+			if (!allowRepeat.includes(event.key as RepeatableKey) && event.repeat)
+				return;
+
+			event.preventDefault();
+			onKeyDown[event.key as Key]();
 		};
 
 		const keyUpHandler = (event: KeyboardEvent) => {
-			if (unpress(event.key as Key)) event.preventDefault();
+			if (!(event.key in onKeyUp)) return;
+			event.preventDefault();
+
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			onKeyUp[event.key as Key]!();
 		};
 
 		document.addEventListener("keydown", keyDownHandler);
 		document.addEventListener("keyup", keyUpHandler);
+
 		return () => {
 			document.removeEventListener("keydown", keyDownHandler);
 			document.removeEventListener("keydown", keyUpHandler);
 		};
-	}, [press, unpress]);
-
-	return { press, unpress };
-}
-
-function isRepeatableKey<Key extends string, RepeatableKey extends Key>(
-	key: Key,
-	repeatables: RepeatableKey[],
-): key is RepeatableKey {
-	return repeatables.includes(key as RepeatableKey);
+	}, []);
 }
