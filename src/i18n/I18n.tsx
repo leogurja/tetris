@@ -4,20 +4,28 @@ import BrazilFlag from "./flags/brazil.svg";
 import UsaFlag from "./flags/usa.svg";
 
 export default function I18n() {
-	const { i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
-	return (
-		<div className="flex gap-3">
-			<Flag
-				image={BrazilFlag}
-				isSelected={i18n.language.includes("pt")}
-				onClick={() => i18n.changeLanguage("pt")}
-			/>
-			<Flag
-				image={UsaFlag}
-				isSelected={i18n.language.includes("en")}
-				onClick={() => i18n.changeLanguage("en")}
-			/>
-		</div>
-	);
+  return (
+    <div className="flex gap-3">
+      <Flag
+        image={BrazilFlag}
+        isSelected={i18n.language.includes("pt")}
+        onClick={() =>
+          void i18n.changeLanguage("pt").catch((e: unknown) => {
+            console.error(e);
+          })
+        }
+      />
+      <Flag
+        image={UsaFlag}
+        isSelected={i18n.language.includes("en")}
+        onClick={() =>
+          void i18n.changeLanguage("en").catch((e: unknown) => {
+            console.error(e);
+          })
+        }
+      />
+    </div>
+  );
 }

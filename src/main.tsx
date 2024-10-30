@@ -6,10 +6,10 @@ import "./i18n";
 import "./styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLDivElement).render(
-	<React.StrictMode>
-		<div className="h-screen flex flex-col text-white">
-			<Nav />
-			<Game />
-		</div>
-	</React.StrictMode>,
+  <React.StrictMode>
+    <div className="h-screen flex flex-col text-white">
+      <Nav />
+      <Game />
+    </div>
+  </React.StrictMode>,
 );
