@@ -1,38 +1,47 @@
 {
-	"name": "tetris",
-	"version": "0.9.0",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"start": "vite --host",
-		"build": "tsc && vite build",
-		"preview": "vite preview",
-		"format": "npx @biomejs/biome format --write ./src",
-		"lint": "npx @biomejs/biome lint ./src",
-		"check": "npx @biomejs/biome check --apply ./src",
-		"ci:check": "npx @biomejs/biome ci ./src"
-	},
-	"dependencies": {
-		"@heroicons/react": "^2.0.18",
-		"i18next": "^23.2.0",
-		"i18next-browser-languagedetector": "^7.0.2",
-		"million": "^2.5.11",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-i18next": "^14.0.0",
-		"zustand": "^4.5.0"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.5.3",
-		"@types/react": "^18.0.28",
-		"@types/react-dom": "^18.0.11",
-		"@vitejs/plugin-react-swc": "^3.0.0",
-		"autoprefixer": "^10.4.14",
-		"eslint-plugin-react": "^7.32.2",
-		"postcss": "^8.4.23",
-		"prettier-plugin-packagejson": "^2.4.3",
-		"tailwindcss": "^3.3.2",
-		"typescript": "^5.0.2",
-		"vite": "^5.0.11"
-	}
+  "name": "tetris",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite --port=3000",
+    "format": "prettier .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.7",
+    "i18next": "^23.2.0",
+    "i18next-browser-languagedetector": "^7.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^14.0.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.14",
+    "babel-plugin-react-compiler": "^19.0.0-beta-6fc168f-20241025",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-6fc168f-20241025",
+    "globals": "^15.11.0",
+    "postcss": "^8.4.23",
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-packagejson": "^2.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "react-compiler-runtime": "^19.0.0-beta-6fc168f-20241025",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.0.2",
+    "typescript-eslint": "^8.12.2",
+    "vite": "^5.0.11"
+  }
 }
