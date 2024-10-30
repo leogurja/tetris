@@ -7,20 +7,25 @@
   position: relative;
 }
 
-.upcoming.I {
-  transform: translateY(150%);
-}
+.upcoming {
+  &.I {
+    @apply border-neutral-900;
+    transform: translateY(150%);
+  }
 
-.upcoming.O {
-  transform: translateY(100%);
-}
+  &.O {
+    @apply border-neutral-900;
+    transform: translateY(100%);
+  }
 
-.upcoming.J,
-.upcoming.L,
-.upcoming.T,
-.upcoming.S,
-.upcoming.Z {
-  transform: translate(50%, 100%);
+  &.J,
+  &.L,
+  &.T,
+  &.S,
+  &.Z {
+    @apply border-neutral-900;
+    transform: translate(50%, 100%);
+  }
 }
 
 .I {
