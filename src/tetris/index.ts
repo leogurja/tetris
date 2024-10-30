@@ -3,6 +3,7 @@ import { Sfx, play } from "./audio";
 import Floor from "./floor";
 import GameState from "./gameState";
 import Piece from "./piece";
+import { useShallow } from "zustand/shallow";
 
 export { type BlockType } from "./types";
 
@@ -144,4 +145,6 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   },
 }));
 
-export default useTetrisStore;
+export default function useTetris<T>(fn: (state: TetrisStore) => T) {
+  return useTetrisStore(useShallow(fn));
+};

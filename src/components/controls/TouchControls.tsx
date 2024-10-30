@@ -6,11 +6,11 @@ import {
   ArrowURightUp,
 } from "@phosphor-icons/react";
 import { PropsWithChildren } from "react";
-import useTetrisStore from "../../tetris";
+import useTetris from "../../tetris";
 
 export default function TouchControls() {
   const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] =
-    useTetrisStore((t) => [
+    useTetris((t) => [
       t.rotate,
       t.moveLeft,
       t.moveRight,

@@ -6,7 +6,7 @@ import {
   SpeakerHigh,
   SpeakerSimpleSlash,
 } from "@phosphor-icons/react";
-import useTetrisStore from "../../tetris";
+import useTetris from "../../tetris";
 import GameState from "../../tetris/gameState";
 import Button from "./Button";
 import UpcomingPiece from "./UpcomingPiece";
@@ -18,7 +18,7 @@ const icons: Record<GameState, Icon> = {
 };
 
 export default function Menu() {
-  const [gameState, toggleGameState, isMuted, toggleIsMuted] = useTetrisStore(
+  const [gameState, toggleGameState, isMuted, toggleIsMuted] = useTetris(
     (t) => [t.gameState, t.toggleGameState, t.isMuted, t.toggleIsMuted],
   );
 

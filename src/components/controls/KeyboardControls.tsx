@@ -7,7 +7,7 @@ import {
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import useKeyboard from "../../hooks/useKeyboard";
-import useTetrisStore from "../../tetris";
+import useTetris from "../../tetris";
 
 export default function KeyboardControls() {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export default function KeyboardControls() {
     hardDrop,
     stopSoftDrop,
     toggleGameState,
-  ] = useTetrisStore((t) => [
+  ] = useTetris((t) => [
     t.startSoftDrop,
     t.rotate,
     t.moveLeft,
