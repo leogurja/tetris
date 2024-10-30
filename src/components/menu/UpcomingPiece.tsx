@@ -1,29 +1,28 @@
 import { useMemo } from "react";
-import Piece from "../../tetris/piece";
-import { BoardType } from "../../tetris/types";
+import useTetris from "../../tetris";
+import { BlockType, BoardType } from "../../tetris/types";
 
 export default function UpcomingPiece() {
-	const upcomingPiece = Piece.peek();
+  const [nextPiece] = useTetris((t) => [t.nextPiece]);
 
-	const board = useMemo<BoardType>(() => {
-		const board = Array(4 * 4).fill("");
+  const board = useMemo<BoardType>(() => {
+    const board = Array<BlockType>(4 * 4).fill("");
 
-		for (const block of upcomingPiece.blocks) {
-			board[block.y * 4 + block.x] = block.type;
-		}
+    for (const block of nextPiece.blocks) {
+      board[block.y * 4 + block.x] = block.type;
+    }
 
-		return board;
-	}, [upcomingPiece]);
+    return board;
+  }, [nextPiece]);
 
-	return (
-		<div className="grid grid-cols-4 w-full gap-px aspect-square place-content-center rounded-xl p-1 select-none bg-neutral-900">
-			{board.map((cell, index) => (
-				<div
-					className={`upcoming aspect-square flex border sm:border-2 border-transparent ${cell}`}
-					// biome-ignore lint/suspicious/noArrayIndexKey: the order of the array never changes
-					key={index}
-				/>
-			))}
-		</div>
-	);
+  return (
+    <div className="grid grid-cols-4 w-full aspect-square place-content-center rounded-xl p-1 select-none bg-neutral-900">
+      {board.map((cell, index) => (
+        <div
+          className={`upcoming aspect-square flex border border-collapse border-transparent ${cell}`}
+          key={index}
+        />
+      ))}
+    </div>
+  );
 }
