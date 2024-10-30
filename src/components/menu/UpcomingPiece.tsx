@@ -19,7 +19,7 @@ export default function UpcomingPiece() {
     <div className="grid grid-cols-4 w-full aspect-square place-content-center rounded-xl p-1 select-none bg-neutral-900">
       {board.map((cell, index) => (
         <div
-          className={`upcoming aspect-square flex border border-collapse border-transparent ${cell}`}
+          className={`upcoming aspect-square flex border border-collapse border-neutral-900 ${cell}`}
           key={index}
         />
       ))}
