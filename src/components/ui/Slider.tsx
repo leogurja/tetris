@@ -1,23 +1,23 @@
-import * as Primitive from "@radix-ui/react-slider";
+import { Range, Root, SliderProps, Thumb, Track } from "@radix-ui/react-slider";
 import type { LegacyRef } from "react";
 
 export function Slider(
-  props: Omit<Primitive.SliderProps, "className"> & {
+  props: Omit<SliderProps, "className"> & {
     ref?: LegacyRef<HTMLSpanElement>;
   },
 ) {
   return (
-    <Primitive.Root
+    <Root
       ref={props.ref}
       className="relative flex w-full touch-none select-none items-center h-5"
       {...props}
     >
-      <Primitive.Track className="relative h-2 w-full grow rounded-full bg-neutral-700">
-        <Primitive.Range className="absolute h-full rounded-full bg-neutral-100" />
-      </Primitive.Track>
-      <Primitive.Thumb className="block size-5 rounded-full shadow-sm ring-offset-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
-    </Primitive.Root>
+      <Track className="relative h-2 w-full grow rounded-full bg-neutral-700">
+        <Range className="absolute h-full rounded-full bg-neutral-100" />
+      </Track>
+      <Thumb className="block size-5 rounded-full shadow-sm ring-offset-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+    </Root>
   );
 }
 
-Slider.displayName = Primitive.Root.displayName;
+Slider.displayName = Root.displayName;
