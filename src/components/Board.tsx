@@ -3,7 +3,7 @@ import useTetris from "../tetris";
 import GameState from "../tetris/gameState";
 import render from "../tetris/render";
 
-export default function Board() {
+export function Board() {
   const [piece, floor, gameState] = useTetris((t) => [
     t.piece,
     t.floor,

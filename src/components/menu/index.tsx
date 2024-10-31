@@ -8,8 +8,8 @@ import {
 } from "@phosphor-icons/react";
 import useTetris from "../../tetris";
 import GameState from "../../tetris/gameState";
-import Button from "./Button";
-import UpcomingPiece from "./UpcomingPiece";
+import { Button } from "../ui/Button";
+import { UpcomingPiece } from "./UpcomingPiece";
 
 const icons: Record<GameState, Icon> = {
   GameOver: ArrowClockwise,
@@ -17,7 +17,7 @@ const icons: Record<GameState, Icon> = {
   Paused: Play,
 };
 
-export default function Menu() {
+export function Menu() {
   const [gameState, toggleGameState, isMuted, toggleIsMuted] = useTetris(
     (t) => [t.gameState, t.toggleGameState, t.isMuted, t.toggleIsMuted],
   );

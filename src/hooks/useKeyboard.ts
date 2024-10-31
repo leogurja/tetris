@@ -6,7 +6,7 @@ interface useKeyboardOptions<Key extends string, RepeatableKey extends Key> {
   allowRepeat: RepeatableKey[];
 }
 
-export default function useKeyboard<
+export function useKeyboard<
   Key extends string,
   RepeatableKey extends Key,
 >({ onKeyDown, onKeyUp, allowRepeat }: useKeyboardOptions<Key, RepeatableKey>) {

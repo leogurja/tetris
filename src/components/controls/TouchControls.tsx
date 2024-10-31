@@ -8,7 +8,7 @@ import {
 import { PropsWithChildren } from "react";
 import useTetris from "../../tetris";
 
-export default function TouchControls() {
+export function TouchControls() {
   const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] =
     useTetris((t) => [
       t.rotate,

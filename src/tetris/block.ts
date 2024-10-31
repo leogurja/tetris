@@ -1,12 +1,12 @@
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
 import { PieceType } from "./types";
 
-export default class Block {
+export class Block {
   constructor(
     public x: number,
     public y: number,
     public type: PieceType,
-  ) {}
+  ) { }
 
   translate(x: number, y: number) {
     return new Block(this.x + x, this.y + y, this.type);

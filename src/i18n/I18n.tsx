@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import Flag from "./Flag";
+import { Flag } from "./Flag";
 import BrazilFlag from "./flags/brazil.svg";
 import UsaFlag from "./flags/usa.svg";
 
-export default function I18n() {
+export function I18n() {
   const { i18n } = useTranslation();
 
   return (

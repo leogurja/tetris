@@ -1,8 +1,8 @@
-import Block from "./block";
+import { Block } from "./block";
 
 const scoreTable = [0, 100, 300, 500, 800];
 
-export default class Floor {
+export class Floor {
   blocks: Block[] = [];
 
   /**

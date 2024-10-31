@@ -1,4 +1,4 @@
-import GameState from "./gameState";
+import { GameState } from "./gameState";
 
 export enum PieceType {
   I = "I",

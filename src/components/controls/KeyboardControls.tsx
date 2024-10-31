@@ -6,10 +6,10 @@ import {
 } from "@phosphor-icons/react";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
-import useKeyboard from "../../hooks/useKeyboard";
+import { useKeyboard } from "../../hooks/useKeyboard";
 import useTetris from "../../tetris";
 
-export default function KeyboardControls() {
+export function KeyboardControls() {
   const { t } = useTranslation();
   const [
     startSoftDrop,

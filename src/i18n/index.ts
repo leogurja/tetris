@@ -1,8 +1,8 @@
-import i18n from "i18next";
+import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
-void i18n
+void i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -48,4 +48,4 @@ void i18n
     console.error(e);
   });
 
-export default i18n;
+export const i18n = i18next;

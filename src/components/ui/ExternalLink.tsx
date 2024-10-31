@@ -5,7 +5,7 @@ interface ExternalLinkProps {
   href: string;
 }
 
-export default function ExternalLink({
+export function ExternalLink({
   href,
   children,
 }: PropsWithChildren<ExternalLinkProps>) {

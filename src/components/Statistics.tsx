@@ -4,7 +4,7 @@ import useTetris from "../tetris";
 import GameState from "../tetris/gameState";
 import useHighScore from "../tetris/highScore";
 
-export default function Statistics() {
+export function Statistics() {
   const { t } = useTranslation();
   const [gameState, level, score] = useTetris((t) => [
     t.gameState,

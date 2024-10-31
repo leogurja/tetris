@@ -1,6 +1,6 @@
-export default class Bag<T> {
+export class Bag<T> {
   bag: T[] = [];
-  constructor(private items: T[]) {}
+  constructor(private items: T[]) { }
 
   take() {
     if (this.bag.length === 0) this.refill();

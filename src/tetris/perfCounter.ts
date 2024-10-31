@@ -25,4 +25,4 @@ class PerfCounter {
   }
 }
 
-export default new PerfCounter();
+export const perfCounter = new PerfCounter();

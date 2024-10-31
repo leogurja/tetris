@@ -1,10 +1,10 @@
-import Block from "./block";
+import { Block } from "./block";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
-import Floor from "./floor";
-import Piece from "./piece";
+import { Floor } from "./floor";
+import { Piece } from "./piece";
 import type { BlockType, BoardType } from "./types";
 
-export default function render(floor: Floor, piece: Piece) {
+export function render(floor: Floor, piece: Piece) {
   const board = getEmptyBoard();
   drawBlocks(board, floor.blocks);
   drawBlocks(board, piece.project(floor).blocks, true);

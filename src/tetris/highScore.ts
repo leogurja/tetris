@@ -6,7 +6,7 @@ interface HighScoreSlice {
   save: (score: number) => void;
 }
 
-const useHighScore = create<HighScoreSlice>()(
+export const useHighScore = create<HighScoreSlice>()(
   persist(
     (set, get) => ({
       highScore: 0,
@@ -17,5 +17,3 @@ const useHighScore = create<HighScoreSlice>()(
     { name: "highScoreStore" },
   ),
 );
-
-export default useHighScore;
