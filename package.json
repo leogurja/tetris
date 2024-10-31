@@ -14,18 +14,19 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
+    "@radix-ui/react-slider": "^1.2.1",
     "i18next": "^23.16.4",
     "i18next-browser-languagedetector": "^8.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-rc-603e6108-20241029",
+    "react-dom": "19.0.0-rc-603e6108-20241029",
     "react-i18next": "^15.1.0",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.14",
     "babel-plugin-react-compiler": "^19.0.0-beta-6fc168f-20241025",
@@ -43,5 +44,9 @@
     "typescript": "^5.0.2",
     "typescript-eslint": "^8.12.2",
     "vite": "^5.0.11"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
   }
 }
