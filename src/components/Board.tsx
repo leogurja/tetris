@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import useTetris from "../tetris";
-import GameState from "../tetris/gameState";
-import render from "../tetris/render";
+import { useTetris } from "../tetris";
+import { GameState } from "../tetris/gameState";
+import { render } from "../tetris/render";
 
 export function Board() {
   const [piece, floor, gameState] = useTetris((t) => [

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import useTetris from "../tetris";
-import GameState from "../tetris/gameState";
-import useHighScore from "../tetris/highScore";
+import { useTetris } from "../tetris";
+import { GameState } from "../tetris/gameState";
+import { useHighScore } from "../tetris/highScore";
 
 export function Statistics() {
   const { t } = useTranslation();

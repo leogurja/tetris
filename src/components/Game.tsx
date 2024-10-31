@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import useTetris from "../tetris";
+import { useTetris } from "../tetris";
 import { Sfx, defaultVolumes, music, play } from "../tetris/audio";
-import GameState from "../tetris/gameState";
+import { GameState } from "../tetris/gameState";
 import { Board } from "./Board";
 import { Statistics } from "./Statistics";
 import { Controls } from "./controls";
