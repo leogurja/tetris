@@ -1,4 +1,4 @@
-import { Block } from "./block";
+import type { Block } from "./block";
 
 const scoreTable = [0, 100, 300, 500, 800];
 
@@ -18,9 +18,7 @@ export class Floor {
       .sort((a, b) => a - b);
 
     for (const row of completedRows) {
-      this.blocks = this.blocks
-        .filter((b) => b.y !== row)
-        .map((b) => (b.y < row ? b.translate(0, 1) : b));
+      this.blocks = this.blocks.filter((b) => b.y !== row).map((b) => (b.y < row ? b.translate(0, 1) : b));
     }
 
     return scoreTable[completedRows.length];

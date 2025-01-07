@@ -1,16 +1,16 @@
-import { GameState } from "./gameState";
+import type { GameState } from "./gameState";
 
 export enum PieceType {
-  I = "I",
-  J = "J",
-  L = "L",
-  O = "O",
-  S = "S",
-  T = "T",
-  Z = "Z",
+  I = "i",
+  J = "j",
+  L = "l",
+  O = "o",
+  S = "s",
+  T = "t",
+  Z = "z",
 }
 
-export type BlockType = PieceType | "P" | "";
+export type BlockType = PieceType | "p" | "";
 export type BoardType = BlockType[];
 
 export interface TetrisActions {

@@ -1,23 +1,16 @@
-import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowLineDown,
-  ArrowRight,
-  ArrowURightUp,
-} from "@phosphor-icons/react";
-import { PropsWithChildren } from "react";
-import useTetris from "../../tetris";
+import { ArrowDown, ArrowLeft, ArrowLineDown, ArrowRight, ArrowURightUp } from "@phosphor-icons/react";
+import type { PropsWithChildren } from "react";
+import { useTetris } from "../../tetris";
 
 export function TouchControls() {
-  const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] =
-    useTetris((t) => [
-      t.rotate,
-      t.moveLeft,
-      t.moveRight,
-      t.startSoftDrop,
-      t.stopSoftDrop,
-      t.hardDrop,
-    ]);
+  const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] = useTetris((t) => [
+    t.rotate,
+    t.moveLeft,
+    t.moveRight,
+    t.startSoftDrop,
+    t.stopSoftDrop,
+    t.hardDrop,
+  ]);
   return (
     <footer className="flex w-full justify-evenly justify-self-end">
       <div className="flex items-center justify-center p-2">
@@ -56,12 +49,7 @@ interface KeyProps {
   onTouchEnd?: () => void;
 }
 
-function Key({
-  children,
-  onClick,
-  onTouchStart,
-  onTouchEnd,
-}: PropsWithChildren<KeyProps>) {
+function Key({ children, onClick, onTouchStart, onTouchEnd }: PropsWithChildren<KeyProps>) {
   return (
     <button
       type="button"

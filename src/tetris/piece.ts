@@ -1,6 +1,6 @@
 import { Bag } from "./bag";
 import { Block } from "./block";
-import { Floor } from "./floor";
+import type { Floor } from "./floor";
 import { PieceType } from "./types";
 
 const bag = new Bag([
@@ -100,11 +100,7 @@ export class Piece {
   }
 
   collides(floor: Floor) {
-    return this.blocks.some(
-      (b) =>
-        b.isOutOfBounds() ||
-        floor.blocks.some((fb) => fb.x === b.x && fb.y === b.y),
-    );
+    return this.blocks.some((b) => b.isOutOfBounds() || floor.blocks.some((fb) => fb.x === b.x && fb.y === b.y));
   }
 
   translate(x: number, y: number) {

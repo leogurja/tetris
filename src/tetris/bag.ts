@@ -1,21 +1,20 @@
 export class Bag<T> {
   bag: T[] = [];
-  constructor(private items: T[]) { }
+  private items: T[];
+  constructor(items: T[]) {
+    this.items = items;
+  }
 
   take() {
     if (this.bag.length === 0) this.refill();
 
-    // We've just refilled the bag if necessary
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.bag.pop()!;
+    return this.bag.pop() as NonNullable<T>;
   }
 
   peek() {
     if (this.bag.length === 0) this.refill();
 
-    // We've just refilled the bag if necessary
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.bag.at(-1)!;
+    return this.bag.at(-1) as NonNullable<T>;
   }
 
   private refill() {

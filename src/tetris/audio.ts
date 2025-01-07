@@ -18,9 +18,7 @@ export const defaultVolumes = {
 export const music = document.getElementById("korobeiniki") as HTMLAudioElement;
 
 export const play = (audio: Sfx) => {
-  const clone = document
-    .getElementById(audio)
-    ?.cloneNode(true) as HTMLAudioElement;
+  const clone = document.getElementById(audio)?.cloneNode(true) as HTMLAudioElement;
   clone.volume = defaultVolumes[audio];
-  void clone.play();
+  clone.play();
 };

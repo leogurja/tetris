@@ -6,11 +6,7 @@ import { useHighScore } from "../tetris/highScore";
 
 export function Statistics() {
   const { t } = useTranslation();
-  const [gameState, level, score] = useTetris((t) => [
-    t.gameState,
-    t.level(),
-    t.score,
-  ]);
+  const [gameState, level, score] = useTetris((t) => [t.gameState, t.level(), t.score]);
   const { highScore, save } = useHighScore();
 
   // save high score

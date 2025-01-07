@@ -24,13 +24,13 @@ export function Game() {
     return () => {
       clearInterval(intervalId);
     };
-  }, [tickRate]);
+  }, [tickRate, level, update]);
 
   // music
   useEffect(() => {
     if (gameState === GameState.Playing && !isMuted) {
       music.volume = defaultVolumes.korobeiniki;
-      void music.play();
+      music.play();
     } else {
       music.pause();
     }

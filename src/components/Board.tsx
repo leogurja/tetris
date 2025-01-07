@@ -2,13 +2,10 @@ import { useMemo } from "react";
 import { useTetris } from "../tetris";
 import { GameState } from "../tetris/gameState";
 import { render } from "../tetris/render";
+import { Cell } from "./Cell";
 
 export function Board() {
-  const [piece, floor, gameState] = useTetris((t) => [
-    t.piece,
-    t.floor,
-    t.gameState,
-  ]);
+  const [piece, floor, gameState] = useTetris((t) => [t.piece, t.floor, t.gameState]);
   const board = useMemo(() => render(floor, piece), [piece, floor]);
 
   return (
@@ -18,7 +15,11 @@ export function Board() {
       }`}
     >
       {board.map((cell, index) => (
-        <div className={`w-full aspect-square ${cell}`} key={index} />
+        <Cell
+          variant={cell}
+          // biome-ignore lint/suspicious/noArrayIndexKey: array is never reordered
+          key={index}
+        />
       ))}
     </main>
   );

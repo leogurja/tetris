@@ -12,7 +12,7 @@ export function I18n() {
         image={BrazilFlag}
         isSelected={i18n.language.includes("pt")}
         onClick={() =>
-          void i18n.changeLanguage("pt").catch((e: unknown) => {
+          i18n.changeLanguage("pt").catch((e: unknown) => {
             console.error(e);
           })
         }
@@ -21,7 +21,7 @@ export function I18n() {
         image={UsaFlag}
         isSelected={i18n.language.includes("en")}
         onClick={() =>
-          void i18n.changeLanguage("en").catch((e: unknown) => {
+          i18n.changeLanguage("en").catch((e: unknown) => {
             console.error(e);
           })
         }

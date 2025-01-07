@@ -1,0 +1,68 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 120,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "info",
+        "noUselessUndefinedInitialization": "warn",
+        "noUselessStringConcat": "warn",
+        "noVoid": "warn",
+        "useDateNow": "warn",
+        "useSimplifiedLogicExpression": "warn"
+      },
+      "correctness": {
+        "noConstantMathMinMaxClamp": "warn",
+        "noUndeclaredDependencies": "warn",
+        "noUndeclaredVariables": "error",
+        "noUnusedFunctionParameters": "warn",
+        "noUnusedImports": "warn",
+        "noUnusedPrivateClassMembers": "warn",
+        "noUnusedVariables": "warn",
+        "useArrayLiterals": "warn",
+        "useHookAtTopLevel": "warn"
+      },
+      "performance": {
+        "noBarrelFile": "info",
+        "noReExportAll": "info",
+        "useTopLevelRegex": "warn"
+      },
+      "style": {
+        "noNamespace": "error",
+        "noNamespaceImport": "warn",
+        "noNegationElse": "info",
+        "noParameterProperties": "warn",
+        "noShoutyConstants": "info",
+        "noYodaExpression": "warn",
+        "useCollapsedElseIf": "warn",
+        "useConsistentArrayType": "warn",
+        "useConsistentBuiltinInstantiation": "warn",
+        "useDefaultSwitchClause": "warn",
+        "useExplicitLengthCheck": "warn",
+        "useForOf": "warn",
+        "useFragmentSyntax": "warn",
+        "useNodeAssertStrict": "warn",
+        "useThrowNewError": "warn",
+        "useThrowOnlyError": "error",
+        "useShorthandAssign": "warn"
+      },
+      "suspicious": {
+        "noEvolvingTypes": "warn",
+        "useAwait": "warn",
+        "useErrorMessage": "warn",
+        "useNumberToFixedDigitsArgument": "warn"
+      }
+    }
+  }
+}

@@ -1,25 +1,12 @@
-import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-} from "@phosphor-icons/react";
-import { PropsWithChildren } from "react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "@phosphor-icons/react";
+import type { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useKeyboard } from "../../hooks/useKeyboard";
-import useTetris from "../../tetris";
+import { useTetris } from "../../tetris";
 
 export function KeyboardControls() {
   const { t } = useTranslation();
-  const [
-    startSoftDrop,
-    rotate,
-    moveLeft,
-    moveRight,
-    hardDrop,
-    stopSoftDrop,
-    toggleGameState,
-  ] = useTetris((t) => [
+  const [startSoftDrop, rotate, moveLeft, moveRight, hardDrop, stopSoftDrop, toggleGameState] = useTetris((t) => [
     t.startSoftDrop,
     t.rotate,
     t.moveLeft,
@@ -84,11 +71,7 @@ export function KeyboardControls() {
 }
 
 function Row({ children }: PropsWithChildren) {
-  return (
-    <div className="flex flex-col justify-between items-center gap-2">
-      {children}
-    </div>
-  );
+  return <div className="flex flex-col justify-between items-center gap-2">{children}</div>;
 }
 
 function Key({ children }: PropsWithChildren) {

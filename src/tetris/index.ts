@@ -1,11 +1,11 @@
 import { create } from "zustand";
+import { useShallow } from "zustand/shallow";
 import { Sfx, play } from "./audio";
 import { Floor } from "./floor";
 import { GameState } from "./gameState";
 import { Piece } from "./piece";
-import { useShallow } from "zustand/shallow";
 
-export { type BlockType } from "./types";
+export type { BlockType } from "./types";
 
 export interface TetrisStore {
   piece: Piece;
@@ -81,6 +81,8 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
             score: 0,
             gameState: GameState.Playing,
           };
+        default:
+          throw new TypeError("Unexpected game state");
       }
     });
   },
@@ -147,4 +149,4 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
 
 export function useTetris<T>(fn: (state: TetrisStore) => T) {
   return useTetrisStore(useShallow(fn));
-};
+}

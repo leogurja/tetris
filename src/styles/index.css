@@ -1,10 +1,21 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-* {
-  min-width: 0;
-  position: relative;
+@layer base {
+  input[type="range"]::-webkit-slider-thumb {
+    @apply aspect-square h-4 cursor-grab appearance-none rounded-full border-none bg-white;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply aspect-square h-4 cursor-grab appearance-none rounded-full border-none bg-white;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:active {
+    @apply cursor-grabbing;
+  }
+
+  input[type="range"]::-moz-range-thumb:active {
+    @apply cursor-grabbing;
+  }
 }
 
 .upcoming {
@@ -51,20 +62,4 @@
 }
 .P {
   @apply bg-neutral-800;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  @apply aspect-square h-4 cursor-grab appearance-none rounded-full border-none bg-white;
-}
-
-input[type="range"]::-moz-range-thumb {
-  @apply aspect-square h-4 cursor-grab appearance-none rounded-full border-none bg-white;
-}
-
-input[type="range"]::-webkit-slider-thumb:active {
-  @apply cursor-grabbing;
-}
-
-input[type="range"]::-moz-range-thumb:active {
-  @apply cursor-grabbing;
 }

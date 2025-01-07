@@ -1,17 +1,17 @@
 class PerfCounter {
   times: number[] = [];
-  lastTime = +new Date();
+  lastTime = +Date.now();
 
   avg() {
     return this.times.reduce((curr, acc) => curr + acc, 0) / this.times.length;
   }
 
   start() {
-    this.lastTime = +new Date();
+    this.lastTime = +Date.now();
   }
 
   stop() {
-    this.push(+new Date() - this.lastTime);
+    this.push(+Date.now() - this.lastTime);
   }
 
   private push(ms: number) {
@@ -19,9 +19,7 @@ class PerfCounter {
       this.times.pop();
     }
     this.times.unshift(ms);
-    console.log(
-      `current: ${ms.toFixed(2)}ms, average: ${this.avg().toFixed(2)}ms`,
-    );
+    console.log(`current: ${ms.toFixed(2)}ms, average: ${this.avg().toFixed(2)}ms`);
   }
 }
 
