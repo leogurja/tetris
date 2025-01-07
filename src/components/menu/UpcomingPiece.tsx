@@ -20,7 +20,7 @@ export function UpcomingPiece() {
     <div className="grid grid-cols-4 w-full aspect-square place-content-center rounded-xl p-1 select-none bg-neutral-900">
       {board.map((cell, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: array is never reordered
-        <Cell className="upcoming flex border border-collapse border-transparent" variant={cell} key={index} />
+        <Cell upcoming variant={cell} key={index} />
       ))}
     </div>
   );

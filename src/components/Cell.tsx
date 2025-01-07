@@ -11,12 +11,33 @@ const variants = {
   z: "bg-red-600",
   p: "bg-neutral-800",
   "": "",
+  upcoming: {
+    i: "border-neutral-800 -translate-y-1/2",
+    j: "border-neutral-800 translate-x-1/2 -translate-y-full",
+    l: "border-neutral-800 translate-x-1/2 -translate-y-full",
+    o: "border-neutral-800 -translate-y-full",
+    t: "border-neutral-800 translate-x-1/2 -translate-y-full",
+    s: "border-neutral-800 translate-x-1/2 -translate-y-full",
+    z: "border-neutral-800 translate-x-1/2 -translate-y-full",
+    p: "",
+    "": "",
+  },
 } as const;
 
 interface CellProps extends ComponentProps<"div"> {
-  variant: keyof typeof variants;
+  variant: keyof Omit<typeof variants, "upcoming">;
+  upcoming?: boolean;
 }
 
-export function Cell({ className, variant, ...rest }: CellProps) {
-  return <div className={cn(`w-full aspect-square ${variants[variant]}`, className)} {...rest} />;
+export function Cell({ className, variant, upcoming = false, ...rest }: CellProps) {
+  return (
+    <div
+      className={cn(
+        `w-full aspect-square ${variants[variant]}`,
+        upcoming && `border-transparent flex border border-collapse ${variants.upcoming[variant]}`,
+        className,
+      )}
+      {...rest}
+    />
+  );
 }
