@@ -1,46 +1,21 @@
 import { useEffect } from "react";
-import { useTetris } from "../tetris";
-import { Sfx, defaultVolumes, music, play } from "../tetris/audio";
-import { GameState } from "../tetris/gameState";
+import { gameStore } from "../tetris/game";
+import { useTickRate } from "../tetris/gameControl";
 import { Board } from "./Board";
 import { Statistics } from "./Statistics";
 import { Controls } from "./controls";
 import { Menu } from "./menu";
 
 export function Game() {
-  const [update, tickRate, gameState, isMuted, level] = useTetris((t) => [
-    t.update,
-    t.tickRate(),
-    t.gameState,
-    t.isMuted,
-    t.level(),
-  ]);
+  const tickRate = useTickRate();
 
   useEffect(() => {
     if (tickRate <= 0) return;
 
-    const intervalId = setInterval(update, tickRate);
-    music.playbackRate = 1 + level / 20;
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [tickRate, level, update]);
+    const intervalId = setInterval(() => gameStore.send({ type: "update" }), tickRate);
 
-  // music
-  useEffect(() => {
-    if (gameState === GameState.Playing && !isMuted) {
-      music.volume = defaultVolumes.korobeiniki;
-      music.play();
-    } else {
-      music.pause();
-    }
-  }, [gameState, isMuted]);
-
-  // level up sound
-  useEffect(() => {
-    if (level === 0) return;
-    play(Sfx.LevelUp);
-  }, [level]);
+    return () => clearInterval(intervalId);
+  }, [tickRate]);
 
   return (
     <>

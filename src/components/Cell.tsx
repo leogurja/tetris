@@ -33,8 +33,8 @@ export function Cell({ className, variant, upcoming = false, ...rest }: CellProp
   return (
     <div
       className={cn(
-        `w-full aspect-square ${variants[variant]}`,
-        upcoming && `border-transparent flex border border-collapse ${variants.upcoming[variant]}`,
+        `aspect-square ${variants[variant]}`,
+        upcoming ? `border-transparent flex border border-collapse ${variants.upcoming[variant]}` : "w-full",
         className,
       )}
       {...rest}

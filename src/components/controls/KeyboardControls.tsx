@@ -2,32 +2,24 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "@phosphor-icons/react
 import type { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useKeyboard } from "../../hooks/useKeyboard";
-import { useTetris } from "../../tetris";
+import { gameStore } from "../../tetris/game";
+import { gameControlStore } from "../../tetris/gameControl";
 
 export function KeyboardControls() {
   const { t } = useTranslation();
-  const [startSoftDrop, rotate, moveLeft, moveRight, hardDrop, stopSoftDrop, toggleGameState] = useTetris((t) => [
-    t.startSoftDrop,
-    t.rotate,
-    t.moveLeft,
-    t.moveRight,
-    t.hardDrop,
-    t.stopSoftDrop,
-    t.toggleGameState,
-  ]);
 
   // keyboard events
   useKeyboard({
     onKeyDown: {
-      ArrowDown: startSoftDrop,
-      ArrowUp: rotate,
-      ArrowLeft: moveLeft,
-      ArrowRight: moveRight,
-      " ": hardDrop,
-      Escape: toggleGameState,
+      ArrowDown: () => gameControlStore.send({ type: "startSoftDrop" }),
+      ArrowUp: () => gameStore.send({ type: "rotate" }),
+      ArrowLeft: () => gameStore.send({ type: "moveLeft" }),
+      ArrowRight: () => gameStore.send({ type: "moveRight" }),
+      " ": () => gameStore.send({ type: "hardDrop" }),
+      Escape: () => gameControlStore.send({ type: "toggleGameState" }),
     },
     onKeyUp: {
-      ArrowDown: stopSoftDrop,
+      ArrowDown: () => gameControlStore.send({ type: "stopSoftDrop" }),
     },
     allowRepeat: ["ArrowLeft", "ArrowRight", "ArrowUp"],
   });

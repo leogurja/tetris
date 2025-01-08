@@ -1,18 +1,12 @@
-import { useEffect } from "react";
+import { useSelector } from "@xstate/store/react";
 import { useTranslation } from "react-i18next";
-import { useTetris } from "../tetris";
-import { GameState } from "../tetris/gameState";
-import { useHighScore } from "../tetris/highScore";
+import { scoreStore } from "../tetris/scoreControl";
 
 export function Statistics() {
   const { t } = useTranslation();
-  const [gameState, level, score] = useTetris((t) => [t.gameState, t.level(), t.score]);
-  const { highScore, save } = useHighScore();
-
-  // save high score
-  useEffect(() => {
-    if (gameState === GameState.GameOver) save(score);
-  }, [gameState, save, score]);
+  const level = useSelector(scoreStore, (g) => g.context.level);
+  const score = useSelector(scoreStore, (g) => g.context.score);
+  const highScore = useSelector(scoreStore, (g) => g.context.highScore);
 
   return (
     <header className="w-full rounded-2xl pb-2 grid grid-cols-3 place-items-stretch justify-between items-center">

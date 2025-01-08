@@ -1,41 +1,37 @@
 import { ArrowDown, ArrowLeft, ArrowLineDown, ArrowRight, ArrowURightUp } from "@phosphor-icons/react";
 import type { PropsWithChildren } from "react";
-import { useTetris } from "../../tetris";
+import { gameStore } from "../../tetris/game";
+import { gameControlStore } from "../../tetris/gameControl";
 
 export function TouchControls() {
-  const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] = useTetris((t) => [
-    t.rotate,
-    t.moveLeft,
-    t.moveRight,
-    t.startSoftDrop,
-    t.stopSoftDrop,
-    t.hardDrop,
-  ]);
   return (
     <footer className="flex w-full justify-evenly justify-self-end">
       <div className="flex items-center justify-center p-2">
         <div className="grid grid-cols-3 place-content-stretch">
           <div />
-          <Key onClick={rotate}>
+          <Key onClick={() => gameStore.send({ type: "rotate" })}>
             <ArrowURightUp size={64} />
           </Key>
           <div />
-          <Key onClick={moveLeft}>
+          <Key onClick={() => gameStore.send({ type: "moveLeft" })}>
             <ArrowLeft size={64} />
           </Key>
           <div />
-          <Key onClick={moveRight}>
+          <Key onClick={() => gameStore.send({ type: "moveRight" })}>
             <ArrowRight size={64} />
           </Key>
           <div />
-          <Key onTouchStart={startSoftDrop} onTouchEnd={stopSoftDrop}>
+          <Key
+            onTouchStart={() => gameControlStore.send({ type: "startSoftDrop" })}
+            onTouchEnd={() => gameControlStore.send({ type: "startSoftDrop" })}
+          >
             <ArrowDown size={64} />
           </Key>
           <div />
         </div>
       </div>
       <div className="flex items-center justify-center p-2">
-        <Key onClick={hardDrop}>
+        <Key onClick={() => gameStore.send({ type: "hardDrop" })}>
           <ArrowLineDown className="w-20" />
         </Key>
       </div>

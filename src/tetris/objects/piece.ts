@@ -1,7 +1,16 @@
 import { Bag } from "./bag";
 import { Block } from "./block";
 import type { Floor } from "./floor";
-import { PieceType } from "./types";
+
+export enum PieceType {
+  I = "i",
+  J = "j",
+  L = "l",
+  O = "o",
+  S = "s",
+  T = "t",
+  Z = "z",
+}
 
 const bag = new Bag([
   {

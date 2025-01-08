@@ -1,5 +1,5 @@
-import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
-import type { PieceType } from "./types";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "../config";
+import type { PieceType } from "./piece";
 
 export class Block {
   public x: number;
