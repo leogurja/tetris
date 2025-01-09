@@ -14,18 +14,19 @@ export const gameStore = createStore({
   },
   on: {
     update: ({ piece, floor }) => {
+      const updatedPiece = piece.translate(0, 1);
+      if (!updatedPiece.collides(floor)) return { piece: updatedPiece };
+
+      const addedScore = floor.push(piece.blocks);
+      if (addedScore > 0) scoreStore.send({ type: "add", by: addedScore });
+
+      piece = Piece.take();
       if (piece.collides(floor)) {
         audioStore.send({ type: "playSfx", sfx: "game-over" });
         audioStore.send({ type: "pauseMusic" });
         gameControlStore.send({ type: "setGameState", gameState: GameState.GameOver });
         return {};
       }
-
-      const updatedPiece = piece.translate(0, 1);
-      if (!updatedPiece.collides(floor)) return { piece: updatedPiece };
-
-      const addedScore = floor.push(piece.blocks);
-      if (addedScore > 0) scoreStore.send({ type: "add", by: addedScore });
 
       return {
         floor,
@@ -63,11 +64,13 @@ export const gameStore = createStore({
         return movedPiece.collides(floor) ? piece : movedPiece;
       },
     },
-    hardDrop: {
-      piece: ({ piece, floor }) => {
-        audioStore.send({ type: "playSfx", sfx: "drop" });
-        return piece.project(floor);
-      },
+    hardDrop: ({ piece, floor }) => {
+      audioStore.send({ type: "playSfx", sfx: "drop" });
+
+      const addedScore = floor.push(piece.project(floor).blocks);
+      if (addedScore > 0) scoreStore.send({ type: "add", by: addedScore });
+
+      return { piece: Piece.take(), nextPiece: Piece.peek() };
     },
   },
 });

@@ -1,13 +1,13 @@
-import { ArrowDown, ArrowLeft, ArrowLineDown, ArrowRight, ArrowURightUp } from "@phosphor-icons/react";
-import type { PropsWithChildren } from "react";
+import { ArrowDown, ArrowLeft, ArrowLineDown, ArrowRight, ArrowURightUp } from "phosphor-solid";
+import type { JSXElement } from "solid-js";
 import { gameStore } from "../../tetris/game";
 import { gameControlStore } from "../../tetris/gameControl";
 
 export function TouchControls() {
   return (
-    <footer className="flex w-full justify-evenly justify-self-end">
-      <div className="flex items-center justify-center p-2">
-        <div className="grid grid-cols-3 place-content-stretch">
+    <footer class="flex w-full justify-evenly justify-self-end">
+      <div class="flex items-center justify-center p-2">
+        <div class="grid grid-cols-3 place-content-stretch">
           <div />
           <Key onClick={() => gameStore.send({ type: "rotate" })}>
             <ArrowURightUp size={64} />
@@ -30,9 +30,9 @@ export function TouchControls() {
           <div />
         </div>
       </div>
-      <div className="flex items-center justify-center p-2">
+      <div class="flex items-center justify-center p-2">
         <Key onClick={() => gameStore.send({ type: "hardDrop" })}>
-          <ArrowLineDown className="w-20" />
+          <ArrowLineDown class="w-20" />
         </Key>
       </div>
     </footer>
@@ -43,13 +43,14 @@ interface KeyProps {
   onClick?: () => void;
   onTouchStart?: () => void;
   onTouchEnd?: () => void;
+  children: JSXElement;
 }
 
-function Key({ children, onClick, onTouchStart, onTouchEnd }: PropsWithChildren<KeyProps>) {
+function Key({ children, onClick, onTouchStart, onTouchEnd }: KeyProps) {
   return (
     <button
       type="button"
-      className="p-4 aspect-square shadow-md font-medium rounded-lg bg-neutral-600 text-neutral-100 border-neutral-500"
+      class="p-4 aspect-square shadow-md font-medium rounded-lg bg-neutral-600 text-neutral-100 border-neutral-500"
       onClick={onClick}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}

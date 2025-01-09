@@ -1,5 +1,5 @@
 import { createStore } from "@xstate/store";
-import { useSelector } from "@xstate/store/react";
+import { useSelector } from "@xstate/store/solid";
 import { audioStore } from "./audioControl";
 import { gameStore } from "./game";
 import { GameState } from "./objects/gameState";
@@ -42,12 +42,12 @@ export const gameControlStore = createStore({
   },
 });
 
-export function useTickRate() {
+export function tickRate() {
   const gameState = useSelector(gameControlStore, (g) => g.context.gameState);
   const isAccelerated = useSelector(gameControlStore, (g) => g.context.isAccelerated);
   const level = useSelector(scoreStore, (g) => g.context.level);
 
-  if (gameState !== GameState.Playing) return 0;
-  if (isAccelerated) return 50;
-  return (0.8 - level * 0.007) ** level * 1000;
+  if (gameState() !== GameState.Playing) return 0;
+  if (isAccelerated()) return 50;
+  return (0.8 - level() * 0.007) ** level() * 1000;
 }

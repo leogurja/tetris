@@ -1,4 +1,3 @@
-import type { ComponentProps } from "react";
 import { cn } from "./utils/cn";
 
 const variants = {
@@ -24,15 +23,16 @@ const variants = {
   },
 } as const;
 
-interface CellProps extends ComponentProps<"div"> {
+interface CellProps {
   variant: keyof Omit<typeof variants, "upcoming">;
   upcoming?: boolean;
+  class?: string;
 }
 
-export function Cell({ className, variant, upcoming = false, ...rest }: CellProps) {
+export function Cell({ class: className, variant, upcoming = false, ...rest }: CellProps) {
   return (
     <div
-      className={cn(
+      class={cn(
         `aspect-square ${variants[variant]}`,
         upcoming ? `border-transparent flex border border-collapse ${variants.upcoming[variant]}` : "w-full",
         className,

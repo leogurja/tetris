@@ -1,15 +1,16 @@
-import { ArrowCircleUpRight } from "@phosphor-icons/react";
-import type { PropsWithChildren } from "react";
+import { ArrowCircleUpRight } from "phosphor-solid";
+import type { JSXElement } from "solid-js";
 
 interface ExternalLinkProps {
   href: string;
+  children: JSXElement;
 }
 
-export function ExternalLink({ href, children }: PropsWithChildren<ExternalLinkProps>) {
+export function ExternalLink({ href, children }: ExternalLinkProps) {
   return (
     <a
       href={href}
-      className="flex items-center text-sm gap-0.5 opacity-70 hover:opacity-100 transition-opacity"
+      class="flex items-center text-sm gap-0.5 opacity-70 hover:opacity-100 transition-opacity"
       rel="noreferrer"
       target="_blank"
     >
