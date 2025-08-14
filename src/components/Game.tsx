@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import useTetris from "../tetris";
+import { useTetris } from "../tetris";
 import { Sfx, defaultVolumes, music, play } from "../tetris/audio";
-import GameState from "../tetris/gameState";
+import { GameState } from "../tetris/gameState";
 import { Board } from "./Board";
 import { Statistics } from "./Statistics";
 import { Controls } from "./controls";
@@ -44,7 +44,7 @@ export function Game() {
 
   return (
     <>
-      <main className="aspect-[9/16] max-w-full h-full flex flex-col items-center p-2">
+      <main className="aspect-9/16 max-w-full h-full flex flex-col items-center p-2">
         <Statistics />
         <section className="flex h-full w-full justify-center">
           <Board />

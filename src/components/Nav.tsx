@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import I18n from "../i18n/I18n";
+import { I18n } from "../i18n/I18n";
 import { ExternalLink } from "./ui/ExternalLink";
 
 export function Nav() {

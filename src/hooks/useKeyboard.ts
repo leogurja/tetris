@@ -6,10 +6,11 @@ interface useKeyboardOptions<Key extends string, RepeatableKey extends Key> {
   allowRepeat: RepeatableKey[];
 }
 
-export function useKeyboard<
-  Key extends string,
-  RepeatableKey extends Key,
->({ onKeyDown, onKeyUp, allowRepeat }: useKeyboardOptions<Key, RepeatableKey>) {
+export function useKeyboard<Key extends string, RepeatableKey extends Key>({
+  onKeyDown,
+  onKeyUp,
+  allowRepeat,
+}: useKeyboardOptions<Key, RepeatableKey>) {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       if (!(event.key in onKeyDown)) return;

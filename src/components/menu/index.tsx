@@ -1,20 +1,20 @@
 import {
-  ArrowClockwise,
-  Icon,
-  Pause,
-  Play,
-  SpeakerHigh,
-  SpeakerSimpleSlash,
+  ArrowClockwiseIcon,
+  type Icon,
+  PauseIcon,
+  PlayIcon,
+  SpeakerHighIcon,
+  SpeakerSimpleSlashIcon,
 } from "@phosphor-icons/react";
-import useTetris from "../../tetris";
-import GameState from "../../tetris/gameState";
+import { useTetris } from "../../tetris";
+import type { GameState } from "../../tetris/gameState";
 import { Button } from "../ui/Button";
 import { UpcomingPiece } from "./UpcomingPiece";
 
 const icons: Record<GameState, Icon> = {
-  GameOver: ArrowClockwise,
-  Playing: Pause,
-  Paused: Play,
+  GameOver: ArrowClockwiseIcon,
+  Playing: PauseIcon,
+  Paused: PlayIcon,
 };
 
 export function Menu() {
@@ -28,7 +28,7 @@ export function Menu() {
       <Button onClick={toggleGameState} Icon={icons[gameState]} />
       <Button
         onClick={toggleIsMuted}
-        Icon={isMuted ? SpeakerSimpleSlash : SpeakerHigh}
+        Icon={isMuted ? SpeakerSimpleSlashIcon : SpeakerHighIcon}
       />
     </aside>
   );

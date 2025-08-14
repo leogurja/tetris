@@ -1,5 +1,5 @@
 import type { Icon } from "@phosphor-icons/react";
-import { MouseEvent, PropsWithoutRef } from "react";
+import type { MouseEvent, PropsWithoutRef } from "react";
 
 interface ButtonProps {
   onClick: (event: MouseEvent) => void;

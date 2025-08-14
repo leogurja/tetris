@@ -1,7 +1,7 @@
-import { Block } from "./block";
+import type { Block } from "./block";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./config";
-import { Floor } from "./floor";
-import { Piece } from "./piece";
+import type { Floor } from "./floor";
+import type { Piece } from "./piece";
 import type { BlockType, BoardType } from "./types";
 
 export function render(floor: Floor, piece: Piece) {

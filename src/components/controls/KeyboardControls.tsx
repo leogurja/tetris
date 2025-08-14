@@ -1,13 +1,13 @@
 import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
+  ArrowDownIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
 } from "@phosphor-icons/react";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useKeyboard } from "../../hooks/useKeyboard";
-import useTetris from "../../tetris";
+import { useTetris } from "../../tetris";
 
 export function KeyboardControls() {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ export function KeyboardControls() {
     <div className="w-[80%] mx-20 mb-1 h-28 rounded-2xl gap-2 grid grid-cols-5 place-content-evenly items-center p-2 mt-4 text-xs">
       <Row>
         <Key>
-          <ArrowUp size={24} />
+          <ArrowUpIcon size={24} />
         </Key>
         <span>{t("rotate")}</span>
       </Row>
@@ -57,17 +57,17 @@ export function KeyboardControls() {
       <Row>
         <span className="flex gap-1">
           <Key>
-            <ArrowLeft size={24} />
+            <ArrowLeftIcon size={24} />
           </Key>
           <Key>
-            <ArrowRight size={24} />
+            <ArrowRightIcon size={24} />
           </Key>
         </span>
         <span>{t("move")}</span>
       </Row>
       <Row>
         <Key>
-          <ArrowDown size={24} />
+          <ArrowDownIcon size={24} />
         </Key>
         <span>{t("softDrop")}</span>
       </Row>

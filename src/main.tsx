@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Game from "./components/Game";
-import Nav from "./components/Nav";
+import { Game } from "./components/Game";
+import { Nav } from "./components/Nav";
 import "./i18n";
 import "./styles/index.css";
 

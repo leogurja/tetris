@@ -1,4 +1,4 @@
-import { Block } from "./block";
+import type { Block } from "./block";
 
 const scoreTable = [0, 100, 300, 500, 800];
 
@@ -6,7 +6,6 @@ export class Floor {
   blocks: Block[] = [];
 
   /**
-   *
    * @param blocks
    * @returns added score
    */

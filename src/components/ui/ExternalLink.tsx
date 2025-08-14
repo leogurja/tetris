@@ -1,5 +1,5 @@
-import { ArrowCircleUpRight } from "@phosphor-icons/react";
-import { PropsWithChildren } from "react";
+import { ArrowCircleUpRightIcon } from "@phosphor-icons/react";
+import type { PropsWithChildren } from "react";
 
 interface ExternalLinkProps {
   href: string;
@@ -17,7 +17,7 @@ export function ExternalLink({
       target="_blank"
     >
       {children}
-      <ArrowCircleUpRight size={16} />
+      <ArrowCircleUpRightIcon size={16} />
     </a>
   );
 }

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import useTetris from "../../tetris";
-import { BlockType, BoardType } from "../../tetris/types";
+import { useTetris } from "../../tetris";
+import type { BlockType, BoardType } from "../../tetris/types";
 
 export function UpcomingPiece() {
   const [nextPiece] = useTetris((t) => [t.nextPiece]);

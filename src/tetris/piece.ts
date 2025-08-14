@@ -1,6 +1,6 @@
 import { Bag } from "./bag";
 import { Block } from "./block";
-import { Floor } from "./floor";
+import type { Floor } from "./floor";
 import { PieceType } from "./types";
 
 const bag = new Bag([

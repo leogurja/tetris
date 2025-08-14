@@ -1,9 +1,9 @@
 import * as Primitive from "@radix-ui/react-slider";
-import type { LegacyRef } from "react";
+import type { Ref } from "react";
 
 export function Slider(
   props: Omit<Primitive.SliderProps, "className"> & {
-    ref?: LegacyRef<HTMLSpanElement>;
+    ref?: Ref<HTMLSpanElement>;
   },
 ) {
   return (
