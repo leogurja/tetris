@@ -1,46 +1,28 @@
-import { useEffect } from "react";
-import { useTetris } from "../tetris";
-import { Sfx, defaultVolumes, music, play } from "../tetris/audio";
-import { GameState } from "../tetris/gameState";
+import { useGame } from "../lib/contexts/game";
+import { useKeyboard } from "../lib/hooks/useKeyboard";
 import { Board } from "./Board";
 import { Statistics } from "./Statistics";
 import { Controls } from "./controls";
 import { Menu } from "./menu";
 
 export function Game() {
-  const [update, tickRate, gameState, isMuted, level] = useTetris((t) => [
-    t.update,
-    t.tickRate(),
-    t.gameState,
-    t.isMuted,
-    t.level(),
-  ]);
+  const { dispatch, dropPiece, toggleGameState, setIsAccelerated } = useGame();
 
-  useEffect(() => {
-    if (tickRate <= 0) return;
-
-    const intervalId = setInterval(update, tickRate);
-    music.playbackRate = 1 + level / 20;
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [tickRate]);
-
-  // music
-  useEffect(() => {
-    if (gameState === GameState.Playing && !isMuted) {
-      music.volume = defaultVolumes.korobeiniki;
-      void music.play();
-    } else {
-      music.pause();
-    }
-  }, [gameState, isMuted]);
-
-  // level up sound
-  useEffect(() => {
-    if (level === 0) return;
-    play(Sfx.LevelUp);
-  }, [level]);
+  // keyboard events
+  useKeyboard({
+    onKeyDown: {
+      ArrowDown: () => setIsAccelerated(true),
+      ArrowUp: () => dispatch({ type: "rotate" }),
+      ArrowLeft: () => dispatch({ type: "move", x: -1 }),
+      ArrowRight: () => dispatch({ type: "move", x: 1 }),
+      " ": dropPiece,
+      Escape: toggleGameState,
+    },
+    onKeyUp: {
+      ArrowDown: () => setIsAccelerated(false),
+    },
+    allowRepeat: ["ArrowLeft", "ArrowRight", "ArrowUp"],
+  });
 
   return (
     <>

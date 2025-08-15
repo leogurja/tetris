@@ -6,18 +6,31 @@ import {
   ArrowURightUpIcon,
 } from "@phosphor-icons/react";
 import type { PropsWithChildren } from "react";
-import { useTetris } from "../../tetris";
+import { useGame } from "../../lib/contexts/game";
 
 export function TouchControls() {
-  const [rotate, moveLeft, moveRight, startSoftDrop, stopSoftDrop, hardDrop] =
-    useTetris((t) => [
-      t.rotate,
-      t.moveLeft,
-      t.moveRight,
-      t.startSoftDrop,
-      t.stopSoftDrop,
-      t.hardDrop,
-    ]);
+  const { dropPiece, dispatch, setIsAccelerated } = useGame();
+
+  const rotate = () => {
+    dispatch({ type: "rotate" });
+  };
+
+  const moveLeft = () => {
+    dispatch({ type: "move", x: -1 });
+  };
+
+  const moveRight = () => {
+    dispatch({ type: "move", x: 1 });
+  };
+
+  const startSoftDrop = () => {
+    setIsAccelerated(true);
+  };
+
+  const stopSoftDrop = () => {
+    setIsAccelerated(false);
+  };
+
   return (
     <footer className="flex w-full justify-evenly justify-self-end">
       <div className="flex items-center justify-center p-2">
@@ -42,7 +55,7 @@ export function TouchControls() {
         </div>
       </div>
       <div className="flex items-center justify-center p-2">
-        <Key onClick={hardDrop}>
+        <Key onClick={dropPiece}>
           <ArrowLineDownIcon className="w-20" />
         </Key>
       </div>

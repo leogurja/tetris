@@ -1,22 +1,9 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useTetris } from "../tetris";
-import { GameState } from "../tetris/gameState";
-import { useHighScore } from "../tetris/highScore";
+import { useScore } from "../lib/contexts/score";
 
 export function Statistics() {
   const { t } = useTranslation();
-  const [gameState, level, score] = useTetris((t) => [
-    t.gameState,
-    t.level(),
-    t.score,
-  ]);
-  const { highScore, save } = useHighScore();
-
-  // save high score
-  useEffect(() => {
-    if (gameState === GameState.GameOver) save(score);
-  }, [gameState, save, score]);
+  const { score, level } = useScore();
 
   return (
     <header className="w-full rounded-2xl pb-2 grid grid-cols-3 place-items-stretch justify-between items-center">
@@ -25,7 +12,7 @@ export function Statistics() {
       </h2>
       <h2 className="font-bold text-lg text-center">{score}</h2>
       <h2 className="font-bold text-sm text-end">
-        {t("highScore")} {highScore}
+        {t("highScore")} TODO: reimplement high score
       </h2>
     </header>
   );

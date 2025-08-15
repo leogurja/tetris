@@ -1,15 +1,14 @@
 import { useMemo } from "react";
-import { useTetris } from "../../tetris";
-import type { BlockType, BoardType } from "../../tetris/types";
+import { useGame } from "../../lib/contexts/game";
+import type { Board, Color } from "../../lib/types/entities";
 
 export function UpcomingPiece() {
-  const [nextPiece] = useTetris((t) => [t.nextPiece]);
+  const { nextPiece } = useGame();
+  const board = useMemo<Board>(() => {
+    const board = Array<Color>(4 * 4).fill("");
 
-  const board = useMemo<BoardType>(() => {
-    const board = Array<BlockType>(4 * 4).fill("");
-
-    for (const block of nextPiece.blocks) {
-      board[block.y * 4 + block.x] = block.type;
+    for (const block of nextPiece) {
+      board[block.y * 4 + block.x] = block.color;
     }
 
     return board;
