@@ -1,11 +1,10 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
-import { Sfx, play } from "./audio";
+import type { GameState } from "../lib/constants/game-state";
+import { play } from "./audio";
+import { peek, take } from "./bag";
 import { Floor } from "./floor";
-import { GameState } from "./gameState";
 import { Piece } from "./piece";
-
-export { type BlockType } from "./types";
 
 export interface TetrisStore {
   piece: Piece;
@@ -30,37 +29,38 @@ export interface TetrisStore {
 }
 
 const useTetrisStore = create<TetrisStore>()((set, get) => ({
-  piece: Piece.take(),
-  nextPiece: Piece.peek(),
-  floor: new Floor(),
+  piece: new Piece({ blocks: [], type: "I" }),
+  nextPiece: new Piece({ blocks: [], type: "I" }),
+  floor: Floor.empty(),
   isAccelerated: false,
   score: 0,
   isMuted: false,
-  gameState: GameState.Paused,
+  gameState: "Initial",
   level: () => Math.min(Math.floor(get().score / 1000), 15),
   tickRate: () => {
-    if (get().gameState !== GameState.Playing) return 0;
+    if (get().gameState !== "Playing") return 0;
     if (get().isAccelerated) return 50;
     const level = get().level();
     return (0.8 - level * 0.007) ** level * 1000;
   },
   update: () => {
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
     set(({ piece, floor, score, gameState, isMuted }) => {
       const updatedPiece = piece.translate(0, 1);
 
       if (updatedPiece.collides(floor)) {
-        const addedScore = floor.push(piece.blocks);
+        const [newFloor, addedScore] = floor.push(piece.blocks);
         if (addedScore > 0 && !isMuted) {
           score += addedScore;
-          play(Sfx.Clear);
+          play("clear");
         }
-        piece = Piece.take();
+        piece = take();
 
         if (piece.collides(floor)) {
-          gameState = GameState.GameOver;
-          if (!isMuted) play(Sfx.GameOver);
+          gameState = "GameOver";
+          if (!isMuted) play("game-over");
         }
-        return { piece, score, gameState, floor, nextPiece: Piece.peek() };
+        return { piece, score, gameState, floor: newFloor, nextPiece: peek() };
       }
 
       return { piece: updatedPiece };
@@ -69,17 +69,18 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   toggleGameState: () => {
     set(({ gameState }) => {
       switch (gameState) {
-        case GameState.Playing:
-          return { gameState: GameState.Paused };
-        case GameState.Paused:
-          return { gameState: GameState.Playing };
-        case GameState.GameOver:
+        case "Playing":
+          return { gameState: "Paused" };
+        case "Paused":
+          return { gameState: "Playing" };
+        case "GameOver":
+        case "Initial":
           return {
-            floor: new Floor(),
-            piece: Piece.take(),
-            nextPiece: Piece.peek(),
+            floor: Floor.empty(),
+            piece: take(),
+            nextPiece: peek(),
             score: 0,
-            gameState: GameState.Playing,
+            gameState: "Playing",
           };
       }
     });
@@ -95,8 +96,8 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   },
   rotate: () => {
     set(({ piece, floor, gameState, isMuted }) => {
-      if (gameState !== GameState.Playing) return {};
-      if (!isMuted) play(Sfx.Click);
+      if (gameState !== "Playing") return {};
+      if (!isMuted) play("click");
 
       const rotatedPiece = piece.rotate();
       if (rotatedPiece.collides(floor)) return {};
@@ -106,8 +107,8 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   },
   moveLeft: () => {
     set(({ piece, floor, gameState, isMuted }) => {
-      if (gameState !== GameState.Playing) return {};
-      if (!isMuted) play(Sfx.Click);
+      if (gameState !== "Playing") return {};
+      if (!isMuted) play("click");
 
       const movedPiece = piece.translate(-1, 0);
       if (movedPiece.collides(floor)) return {};
@@ -117,8 +118,8 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   },
   moveRight: () => {
     set(({ piece, floor, gameState, isMuted }) => {
-      if (gameState !== GameState.Playing) return {};
-      if (!isMuted) play(Sfx.Click);
+      if (gameState !== "Playing") return {};
+      if (!isMuted) play("click");
 
       const movedPiece = piece.translate(1, 0);
       if (movedPiece.collides(floor)) return {};
@@ -128,19 +129,19 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
   },
   hardDrop: () => {
     set(({ piece, floor, score, gameState, isMuted }) => {
-      if (gameState !== GameState.Playing) return {};
+      if (gameState !== "Playing") return {};
 
       piece = piece.project(floor);
-      const addedScore = floor.push(piece.project(floor).blocks);
+      const [newFloor, addedScore] = floor.push(piece.project(floor).blocks);
 
       if (!isMuted) {
-        play(Sfx.Drop);
+        play("drop");
         if (addedScore > 0) {
-          play(Sfx.Clear);
+          play("clear");
           score += addedScore;
         }
       }
-      return { piece: Piece.take(), floor, score, nextPiece: Piece.peek() };
+      return { piece: take(), floor: newFloor, score, nextPiece: peek() };
     });
   },
 }));

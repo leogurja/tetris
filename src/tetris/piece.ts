@@ -1,109 +1,33 @@
-import { Bag } from "./bag";
-import { Block } from "./block";
+import type { PieceType } from "@/lib/constants/pieces";
+import { Block, type BlockOptions } from "./block";
 import type { Floor } from "./floor";
-import { PieceType } from "./types";
 
-const bag = new Bag([
-  {
-    type: PieceType.I,
-    blocks: [
-      { x: 2, y: 0 },
-      { x: 0, y: 0 },
-      { x: 1, y: 0 },
-      { x: 3, y: 0 },
-    ],
-  },
-  {
-    type: PieceType.J,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 0, y: 0 },
-      { x: 2, y: 0 },
-      { x: 2, y: 1 },
-    ],
-  },
-  {
-    type: PieceType.L,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 0, y: 0 },
-      { x: 2, y: 0 },
-      { x: 0, y: 1 },
-    ],
-  },
-  {
-    type: PieceType.O,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 1, y: 1 },
-      { x: 2, y: 0 },
-      { x: 2, y: 1 },
-    ],
-  },
-  {
-    type: PieceType.S,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 0, y: 1 },
-      { x: 1, y: 1 },
-      { x: 2, y: 0 },
-    ],
-  },
-  {
-    type: PieceType.T,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 0, y: 0 },
-      { x: 1, y: 1 },
-      { x: 2, y: 0 },
-    ],
-  },
-  {
-    type: PieceType.Z,
-    blocks: [
-      { x: 1, y: 0 },
-      { x: 0, y: 0 },
-      { x: 1, y: 1 },
-      { x: 2, y: 1 },
-    ],
-  },
-]);
-
-interface PieceOptions {
-  blocks: Block[];
+export interface PieceOptions {
+  blocks: BlockOptions[];
   type: PieceType;
+}
+
+interface RenderOptions {
+  width: number;
+  height: number;
+  isUpcoming?: boolean;
 }
 
 export class Piece {
   blocks: Block[];
   type: PieceType;
+  private isProjection = false;
 
-  private constructor({ blocks, type }: PieceOptions) {
-    this.blocks = blocks;
+  constructor({ blocks, type }: PieceOptions) {
+    this.blocks = blocks.map((b) => new Block(b));
     this.type = type;
-  }
-
-  static take() {
-    const { blocks, type } = bag.take();
-    return new Piece({
-      blocks: blocks.map((b) => new Block(b.x + 3, b.y, type)),
-      type,
-    });
-  }
-
-  static peek() {
-    const { blocks, type } = bag.peek();
-    return new Piece({
-      blocks: blocks.map((b) => new Block(b.x, b.y, type)),
-      type,
-    });
   }
 
   collides(floor: Floor) {
     return this.blocks.some(
       (b) =>
         b.isOutOfBounds() ||
-        floor.blocks.some((fb) => fb.x === b.x && fb.y === b.y),
+        floor.blocks.some((fb) => fb.x === b.x && fb.y === b.y)
     );
   }
 
@@ -115,7 +39,7 @@ export class Piece {
   }
 
   rotate() {
-    if (this.type === PieceType.O) return this;
+    if (this.type === "O") return this;
 
     return new Piece({
       ...this,
@@ -124,9 +48,18 @@ export class Piece {
   }
 
   project(floor: Floor) {
+    if (this.blocks.length === 0) return this;
     let projection = this.translate(0, 1);
     while (!projection.collides(floor)) projection = projection.translate(0, 1);
 
-    return projection.translate(0, -1);
+    projection = projection.translate(0, -1);
+    projection.isProjection = true;
+    return projection;
+  }
+
+  render(options: RenderOptions) {
+    return this.blocks.map((block) =>
+      block.render({ ...options, isProjection: this.isProjection })
+    );
   }
 }

@@ -1,0 +1,22 @@
+{
+  "keyboard": {
+    "rotate": "Rotate",
+    "move": "Move",
+    "softDrop": "Soft Drop",
+    "hardDrop": "Hard Drop",
+    "space": "Space",
+    "playPause": "Play/Pause"
+  },
+  "nav": {
+    "portfolio": "Portfolio",
+    "sourceCode": "Source Code"
+  },
+  "metadata": {
+    "title": "Tetris",
+    "description": "Tetris is a classic puzzle game where you rotate and move blocks to fill rows and clear them."
+  },
+  "statistics": {
+    "level": "Level",
+    "highScore": "High Score"
+  }
+}

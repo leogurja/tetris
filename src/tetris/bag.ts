@@ -1,24 +1,20 @@
-export class Bag<T> {
-  bag: T[] = [];
-  constructor(private items: T[]) {}
+import { PIECES } from "@/lib/constants/pieces";
+import { Piece, type PieceOptions } from "./piece";
 
-  take() {
-    if (this.bag.length === 0) this.refill();
+let bag: PieceOptions[] = [];
 
-    // We've just refilled the bag if necessary
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.bag.pop()!;
-  }
+export function take() {
+  if (bag.length === 0) refill();
+  // biome-ignore lint/style/noNonNullAssertion: We've just refilled the bag if necessary
+  return new Piece(bag.pop()!);
+}
 
-  peek() {
-    if (this.bag.length === 0) this.refill();
+export function peek() {
+  if (bag.length === 0) refill();
+  // biome-ignore lint/style/noNonNullAssertion: We've just refilled the bag if necessary
+  return new Piece(bag.at(-1)!);
+}
 
-    // We've just refilled the bag if necessary
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.bag.at(-1)!;
-  }
-
-  private refill() {
-    this.bag = [...this.items].sort(() => Math.random() - 0.5);
-  }
+function refill() {
+  bag = PIECES.toSorted(() => Math.random() - 0.5);
 }

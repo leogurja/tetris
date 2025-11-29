@@ -1,0 +1,22 @@
+{
+  "keyboard": {
+    "rotate": "Rotacionar",
+    "move": "Mover",
+    "softDrop": "Soft Drop",
+    "hardDrop": "Hard Drop",
+    "space": "Espaço",
+    "playPause": "Play/Pause"
+  },
+  "nav": {
+    "portfolio": "Portfólio",
+    "sourceCode": "Código Fonte"
+  },
+  "metadata": {
+    "title": "Tetris",
+    "description": "Tetris é um jogo de quebra-cabeça clássico onde você gira e move blocos para preencher linhas e limpar."
+  },
+  "statistics": {
+    "level": "Nível",
+    "highScore": "Recorde"
+  }
+}

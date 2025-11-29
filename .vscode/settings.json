@@ -1,0 +1,14 @@
+{
+  "i18n-ally.localesPaths": ["messages", "src/i18n"],
+  "[javascript][javascriptreact][typescript][typescriptreact][css][tailwindcss][json][jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "emmet.showExpandedAbbreviation": "never",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "prettier.enable": false,
+  "eslint.enable": false
+}

@@ -6,29 +6,30 @@ import {
   SpeakerHighIcon,
   SpeakerSimpleSlashIcon,
 } from "@phosphor-icons/react";
-import { useTetris } from "../../tetris";
-import type { GameState } from "../../tetris/gameState";
-import { Button } from "../ui/Button";
-import { UpcomingPiece } from "./UpcomingPiece";
+import { Button } from "@/components/ui/button";
+import type { GameState } from "@/lib/constants/game-state";
+import { useTetris } from "@/tetris";
+import { UpcomingPiece } from "./upcoming-piece";
 
 const icons: Record<GameState, Icon> = {
   GameOver: ArrowClockwiseIcon,
   Playing: PauseIcon,
   Paused: PlayIcon,
+  Initial: PlayIcon,
 };
 
 export function Menu() {
   const [gameState, toggleGameState, isMuted, toggleIsMuted] = useTetris(
-    (t) => [t.gameState, t.toggleGameState, t.isMuted, t.toggleIsMuted],
+    (t) => [t.gameState, t.toggleGameState, t.isMuted, t.toggleIsMuted]
   );
 
   return (
-    <aside className="rounded-2xl min-w-20 md:min-w-24 lg:min-w-28 px-2 flex flex-col self-center justify-start gap-3 h-full items-center">
+    <aside className="flex h-full w-20 flex-col items-center justify-start gap-3 self-center rounded-2xl px-2 md:min-w-24 lg:min-w-28">
       <UpcomingPiece />
-      <Button onClick={toggleGameState} Icon={icons[gameState]} />
+      <Button icon={icons[gameState]} onClick={toggleGameState} />
       <Button
+        icon={isMuted ? SpeakerSimpleSlashIcon : SpeakerHighIcon}
         onClick={toggleIsMuted}
-        Icon={isMuted ? SpeakerSimpleSlashIcon : SpeakerHighIcon}
       />
     </aside>
   );
