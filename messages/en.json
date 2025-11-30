@@ -18,5 +18,12 @@
   "statistics": {
     "level": "Level",
     "highScore": "High Score"
+  },
+  "saveScoreModal": {
+    "title": "Save Score",
+    "description": "Enter your name to save your score.",
+    "name": "Name",
+    "save": "Save",
+    "ignore": "Ignore"
   }
 }

@@ -44,23 +44,22 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
     return (0.8 - level * 0.007) ** level * 1000;
   },
   update: () => {
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
-    set(({ piece, floor, score, gameState, isMuted }) => {
-      const updatedPiece = piece.translate(0, 1);
+    set((state) => {
+      const updatedPiece = state.piece.translate(0, 1);
 
-      if (updatedPiece.collides(floor)) {
-        const [newFloor, addedScore] = floor.push(piece.blocks);
-        if (addedScore > 0 && !isMuted) {
-          score += addedScore;
+      if (updatedPiece.collides(state.floor)) {
+        const [newFloor, addedScore] = state.floor.push(state.piece.blocks);
+        if (addedScore > 0 && !state.isMuted) {
+          state.score += addedScore;
           play("clear");
         }
-        piece = take();
+        const piece = getNextPiece();
 
-        if (piece.collides(floor)) {
-          gameState = "GameOver";
-          if (!isMuted) play("game-over");
+        if (piece.collides(newFloor)) {
+          state.gameState = "GameOver";
+          if (!state.isMuted) play("game-over");
         }
-        return { piece, score, gameState, floor: newFloor, nextPiece: peek() };
+        return { ...state, piece, floor: newFloor, nextPiece: peek() };
       }
 
       return { piece: updatedPiece };
@@ -77,7 +76,7 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
         case "Initial":
           return {
             floor: Floor.empty(),
-            piece: take(),
+            piece: getNextPiece(),
             nextPiece: peek(),
             score: 0,
             gameState: "Playing",
@@ -141,10 +140,20 @@ const useTetrisStore = create<TetrisStore>()((set, get) => ({
           score += addedScore;
         }
       }
-      return { piece: take(), floor: newFloor, score, nextPiece: peek() };
+      return {
+        piece: getNextPiece(),
+        floor: newFloor,
+        score,
+        nextPiece: peek(),
+      };
     });
   },
 }));
+
+function getNextPiece() {
+  const newPiece = take();
+  return newPiece.translate(4, 0);
+}
 
 export function useTetris<T>(fn: (state: TetrisStore) => T) {
   return useTetrisStore(useShallow(fn));

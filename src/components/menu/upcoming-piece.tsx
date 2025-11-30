@@ -7,7 +7,7 @@ export function UpcomingPiece() {
   const [nextPiece] = useTetris((t) => [t.nextPiece]);
 
   return (
-    <div className="flex aspect-square w-full flex-col items-center justify-center rounded-xl bg-neutral-900 p-1">
+    <div className="flex aspect-square w-full flex-col items-center justify-center rounded-xl bg-neutral-900 p-1 shadow-md">
       <div className="relative aspect-square w-20 select-none" ref={ref}>
         {nextPiece
           .render({ width, height, isUpcoming: true })

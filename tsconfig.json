@@ -15,7 +15,8 @@
     "noUnusedParameters": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@messages/*": ["./messages/*"]
+      "@messages/*": ["./messages/*"],
+      "@prisma/*": ["./prisma/generated/*"]
     },
     "plugins": [
       {

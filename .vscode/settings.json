@@ -7,8 +7,10 @@
   "emmet.showExpandedAbbreviation": "never",
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
-    "source.organizeImports.biome": "explicit"
+    "source.organizeImports.biome": "explicit",
+    "source.removeUnusedImports": "explicit"
   },
   "prettier.enable": false,
-  "eslint.enable": false
+  "eslint.enable": false,
+  "biome.enabled": true
 }

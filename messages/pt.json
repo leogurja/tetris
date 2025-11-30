@@ -18,5 +18,12 @@
   "statistics": {
     "level": "Nível",
     "highScore": "Recorde"
+  },
+  "saveScoreModal": {
+    "title": "Salvar Pontuação",
+    "description": "Digite seu nome para salvar sua pontuação.",
+    "name": "Nome",
+    "save": "Salvar",
+    "ignore": "Ignorar"
   }
 }

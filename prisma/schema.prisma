@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Score {
+  id        String   @id @default(uuid())
+  player    String
+  score     Int
+  createdAt DateTime @default(now())
+}
